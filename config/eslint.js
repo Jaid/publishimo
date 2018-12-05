@@ -35,14 +35,7 @@ const styleRules = {
       switches: "never"
     }
   ],
-  "padding-line-between-statements": [
-    ERROR,
-    {
-      blankLine: "always",
-      prev: "multiline-block-like",
-      next: "block-like"
-    }
-  ],
+  "padding-line-between-statements": OFF,
   "space-before-blocks": WARN,
   "space-before-function-paren": [WARN, "never"],
   "space-in-parens": WARN,
