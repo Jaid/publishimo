@@ -1,5 +1,7 @@
 import lodash from "lodash"
 
+const githubUrl = "https://github.com"
+
 const getAuthorObject = field => {
   if (!field) {
     return null
@@ -11,10 +13,22 @@ const getAuthorObject = field => {
 
   if (lodash.isObject(field)) {
     const author = {
-      name: field.name
+      name: field.name,
+      email: field.email,
+      url: field.url || field.website
     }
-    if (field.email) {
-      author.email = field.email
+    if (field.github) {
+      if (field.github === true) { // github: true
+        author.github = `${githubUrl}/${author.name.replace(" ", "")}`
+      } else if (field.github.contains("/")) { // github: "https://github.com/Jaid"
+        author.github = field.github
+      } else {
+        author.github = `${githubUrl}/${field.github}` // github: "Jaid"
+      }
+
+      if (!author.url) {
+        author.url = author.github
+      }
     }
 
     return author
