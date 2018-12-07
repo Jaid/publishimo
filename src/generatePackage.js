@@ -9,18 +9,19 @@ export default (rawPackage, rawConfig) => {
     "version",
     "description",
     "author",
+    "license",
     "os",
     "cpu",
     "engines",
     "repository",
+    "homepage",
+    "bugs",
     "contributors",
     "dependencies",
     "peerDependencies",
-    "optionalDependencies",
     "bundledDependencies",
-    "license",
-    "keywords",
-    "homepage"
+    "optionalDependencies",
+    "keywords"
   ]
 
   const processors = reduce(fields, (object, field) => {
@@ -36,7 +37,7 @@ export default (rawPackage, rawConfig) => {
     const result = processor.prepare?.({
       rawConfig,
       rawPackage,
-      getAny: () => rawConfig[field] || rawPackage[field]
+      getAny: (key = field) => rawConfig[key] || rawPackage[key]
     })
     if (!isNil(result)) {
       configMeta[field] = result
@@ -47,10 +48,12 @@ export default (rawPackage, rawConfig) => {
     let result
     if (processor.applyMeta) {
       const metaValue = configMeta[field]
-      if (isFunction(process.applyMeta) && !isNil(metaValue)) {
-        result = metaValue |> applyMeta
-      } else {
-        result = metaValue
+      if (!isNil(metaValue)) {
+        if (isFunction(processor.applyMeta)) {
+          result = metaValue |> processor.applyMeta
+        } else {
+          result = metaValue
+        }
       }
     } else {
       result = processor.apply({
@@ -58,7 +61,7 @@ export default (rawPackage, rawConfig) => {
         rawConfig,
         rawPackage,
         myMeta: configMeta[field],
-        getAny: () => rawConfig[field] || rawPackage[field]
+        getAny: (key = field) => rawConfig[key] || rawPackage[key]
       })
     }
     if (!isNil(result)) {

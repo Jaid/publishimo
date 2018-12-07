@@ -75,7 +75,7 @@ const styleRules = {
   "linebreak-style": WARN,
   "lines-around-comment": WARN,
   "lines-between-class-members": WARN,
-  "multiline-comment-style": WARN,
+  "multiline-comment-style": OFF,
   quotes: WARN,
   "arrow-body-style": [WARN, "as-needed"],
   "arrow-parens": [WARN, "as-needed"],
