@@ -1,6 +1,6 @@
 import {trim} from "lodash"
-import normalizeDiacritics from "normalize-diacritics"
+import {normalizeSync} from "normalize-diacritics"
 
 export default x => x
   |> trim
-  |> normalizeDiacritics.sync
+  |> normalizeSync

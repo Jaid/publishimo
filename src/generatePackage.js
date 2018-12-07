@@ -1,4 +1,4 @@
-import {reduce, isNil} from "lodash"
+import {reduce, isNil, isFunction} from "lodash"
 
 export default (rawPackage, rawConfig) => {
   const config = {}
@@ -38,22 +38,29 @@ export default (rawPackage, rawConfig) => {
       rawPackage,
       getAny: () => rawConfig[field] || rawPackage[field]
     })
-    console.log(field)
-    console.log(processor.prepare)
     if (!isNil(result)) {
-      console.log(result)
       configMeta[field] = result
     }
   }
 
   for (const [field, processor] of Object.entries(processors)) {
-    const result = processor.apply({
-      configMeta,
-      rawConfig,
-      rawPackage,
-      myMeta: configMeta[field],
-      getAny: () => rawConfig[field] || rawPackage[field]
-    })
+    let result
+    if (processor.applyMeta) {
+      const metaValue = configMeta[field]
+      if (isFunction(process.applyMeta) && !isNil(metaValue)) {
+        result = metaValue |> applyMeta
+      } else {
+        result = metaValue
+      }
+    } else {
+      result = processor.apply({
+        configMeta,
+        rawConfig,
+        rawPackage,
+        myMeta: configMeta[field],
+        getAny: () => rawConfig[field] || rawPackage[field]
+      })
+    }
     if (!isNil(result)) {
       config[field] = result
     }

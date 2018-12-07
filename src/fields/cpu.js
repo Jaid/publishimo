@@ -1,8 +1,4 @@
 import cleanStringArray from "lib/cleanStringArray"
 
-export const apply = ({getAny}) => {
-  const value = getAny()
-  if (value) {
-    return value |> cleanStringArray
-  }
-}
+export const prepare = ({getAny}) => getAny()
+export const applyMeta = x => x |> cleanStringArray

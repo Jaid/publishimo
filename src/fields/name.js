@@ -1,10 +1,10 @@
 import cleanString from "lib/cleanString"
 
-export const apply = ({getAny}) => {
-  const value = getAny()
-  if (value) {
-    return value |> cleanString
-  }
+export const prepare = ({getAny}) => getAny()
 
+export const apply = ({myMeta}) => {
+  if (myMeta) {
+    return myMeta |> cleanString
+  }
   return "unnamed"
 }

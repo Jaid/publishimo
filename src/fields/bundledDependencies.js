@@ -1,8 +1,4 @@
 import cleanStringObject from "lib/cleanStringObject"
 
-export const apply = ({getAny}) => {
-  const value = getAny()
-  if (value) {
-    return value |> cleanStringObject
-  }
-}
+export const prepare = ({getAny}) => getAny()
+export const applyMeta = x => x |> cleanStringObject
