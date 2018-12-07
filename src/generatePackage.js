@@ -1,79 +1,63 @@
-import lodash from "lodash"
-
-const githubUrl = "https://github.com"
-
-const getAuthorObject = field => {
-  if (!field) {
-    return null
-  }
-
-  if (lodash.isArray(field)) {
-    return field.map(entry => getAuthorObject(entry))
-  }
-
-  if (lodash.isObject(field)) {
-    const author = {
-      name: field.name,
-      email: field.email,
-      url: field.url || field.website
-    }
-    if (field.github) {
-      if (field.github === true) { // github: true
-        author.github = `${githubUrl}/${author.name.replace(" ", "")}`
-      } else if (field.github.contains("/")) { // github: "https://github.com/Jaid"
-        author.github = field.github
-      } else {
-        author.github = `${githubUrl}/${field.github}` // github: "Jaid"
-      }
-
-      if (!author.url) {
-        author.url = author.github
-      }
-    }
-
-    return author
-  }
-
-  if (lodash.isString(field)) {
-    const author = parseAuthor(field)
-    if (lodash.isEmpty(author)) {
-      return null
-    } else {
-      return author
-    }
-  }
-}
+import {reduce, isNil} from "lodash"
 
 export default (rawPackage, rawConfig) => {
   const config = {}
-  console.log(rawConfig)
-  config.name = rawConfig.name || rawPackage.name
-  config.version = rawPackage.version || "0.0.0"
-  config.description = rawConfig.description || rawPackage.description
-  config.dependencies = rawConfig.dependencies || rawPackage.dependencies
-  config.license = rawConfig.license || rawPackage.license || "UNLICENSED" // https://docs.npmjs.com/files/package.json#license
+  const configMeta = {}
 
-  const authors = []
+  const fields = [
+    "name",
+    "version",
+    "description",
+    "author",
+    "os",
+    "cpu",
+    "engines",
+    "repository",
+    "contributors",
+    "dependencies",
+    "peerDependencies",
+    "optionalDependencies",
+    "bundledDependencies",
+    "license",
+    "keywords",
+    "homepage"
+  ]
 
-  const possibleAuthorFields = [rawConfig.author, rawPackage.author, rawConfig.authors, rawPackage.authors, rawConfig.maintainer, rawPackage.maintainer, rawConfig.maintainers, rawPackage.maintainers, rawConfig.contributors, rawPackage.contributors]
-  for (const field of possibleAuthorFields) {
-    const author = getAuthorObject(field)
-    if (!author) {
-      continue
-    }
+  const processors = reduce(fields, (object, field) => {
+    object[field] = require(`./fields/${field}`)
+    return object
+  }, {})
 
-    if (lodash.isObject(author)) {
-      authors.push(author)
-    } else if (lodash.isArray(author)) {
-      Array.prototype.push.apply(authors, author)
+  /*
+   * Runs "prepare" first on every processor, so all processors can use each others meta data without being dependent on execution order
+   * The existence of a "prepare" function is optional, hence the weird looking optional chaining syntax
+   */
+  for (const [field, processor] of Object.entries(processors)) {
+    const result = processor.prepare?.({
+      rawConfig,
+      rawPackage,
+      getAny: () => rawConfig[field] || rawPackage[field]
+    })
+    console.log(field)
+    console.log(processor.prepare)
+    if (!isNil(result)) {
+      console.log(result)
+      configMeta[field] = result
     }
   }
 
-  // config.author = rawConfig.author || rawPackage.author
+  for (const [field, processor] of Object.entries(processors)) {
+    const result = processor.apply({
+      configMeta,
+      rawConfig,
+      rawPackage,
+      myMeta: configMeta[field],
+      getAny: () => rawConfig[field] || rawPackage[field]
+    })
+    if (!isNil(result)) {
+      config[field] = result
+    }
+  }
 
-
-  console.log({
-    config,
-    authors
-  })
+  return config
 }

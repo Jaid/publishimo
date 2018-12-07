@@ -22,15 +22,21 @@
   },
   "dependencies": {
     "cosmiconfig": "^5.0.7",
+    "hosted-git-info": "^2.7.1",
     "humanize-list": "^1.0.1",
     "lodash": "^4.17.11",
+    "normalize-diacritics": "^0.5.1",
+    "normalize-url": "^4.0.0",
+    "obj-clean": "^2.0.0",
     "parse-author": "^2.0.0",
-    "read-pkg-up": "^4.0.0"
+    "read-pkg-up": "^4.0.0",
+    "sort-keys": "^2.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.0",
     "@babel/core": "^7.2.0",
     "@babel/plugin-proposal-optional-chaining": "^7.2.0",
+    "@babel/plugin-proposal-pipeline-operator": "^7.2.0",
     "@babel/preset-env": "^7.2.0",
     "aot-loader": "^1.0.1",
     "babel-eslint": "^10.0.1",

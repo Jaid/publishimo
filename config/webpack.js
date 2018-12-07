@@ -2,13 +2,20 @@ const path = require("path");
 const pkg = require("../package.json")
 
 const isDevelopment = process.env.NODE_ENV !== "production"
+const getPath = shortPath => path.resolve(__dirname, "..", shortPath)
 
 config = {
   target: "node",
-  entry: "./src/cli",
+  entry: getPath("./src/cli"),
+  resolve: {
+    extensions: [".js", ".jsx"],
+    alias: {
+      lib: getPath("src/lib")
+    }
+  },
   mode: isDevelopment ? "development" : "production",
   output: {
-    path: path.resolve("./build"),
+    path: getPath("build"),
     filename: "cli.js",
     library: pkg.name,
     libraryTarget: "umd",

@@ -13,6 +13,7 @@ config = {
   ],
   plugins: [
     "@babel/proposal-optional-chaining",
+    ["@babel/proposal-pipeline-operator", {proposal: "minimal"}],
     "version"
   ]
 }

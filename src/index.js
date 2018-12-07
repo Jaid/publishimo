@@ -20,7 +20,8 @@ export default () => {
     throw Error(`Could not find a valid ${name} configuration. Looked for files named: ${humanizedSearchPlaces}`)
   }
 
-  generatePackage(rawPackage.pkg, rawConfig.config)
+  const generatedPackage = generatePackage(rawPackage.pkg, rawConfig.config)
+  console.log(generatedPackage)
 }
 
 /*
