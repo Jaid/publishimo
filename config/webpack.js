@@ -43,6 +43,9 @@ config = {
 if (isDevelopment) {
   config.devtool = "eval"
 } else {
+  config.optimization = {
+    moduleIds: "total-size"
+  }
 }
 
 
