@@ -19,7 +19,7 @@ export default (rawPackage, rawConfig) => {
     "contributors",
     "dependencies",
     "peerDependencies",
-    "bundledDependencies",
+    "bundleDependencies",
     "optionalDependencies",
     "keywords"
   ]
