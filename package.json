@@ -38,7 +38,9 @@
     "@babel/plugin-proposal-optional-chaining": "^7.2.0",
     "@babel/plugin-proposal-pipeline-operator": "^7.2.0",
     "@babel/preset-env": "^7.2.0",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
+    "babel-jest": "^23.6.0",
     "babel-loader": "^8.0.4",
     "babel-plugin-lodash": "^3.3.4",
     "babel-plugin-version": "^0.2.3",
@@ -48,13 +50,15 @@
     "eslint-plugin-optimize-regex": "^1.1.6",
     "eslint-plugin-promise": "^4.0.1",
     "faster.js": "^1.1.0",
-    "prepack": "^0.2.54",
+    "jest": "^23.6.0",
+    "regenerator-runtime": "^0.13.1",
     "webpack": "^4.27.0",
     "webpack-cli": "^3.1.2"
   },
   "scripts": {
     "clean": "cross-env ./node_modules/.bin/gulp clean",
     "build-prod": "cross-env NODE_ENV=production node_modules/.bin/webpack --config config/webpack.js",
-    "build-dev": "cross-env node_modules/.bin/webpack --config config/webpack.js"
+    "build-dev": "cross-env node_modules/.bin/webpack --config config/webpack.js",
+    "test": "yarn build-prod && jest"
   }
 }
