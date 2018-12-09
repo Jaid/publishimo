@@ -4,9 +4,8 @@ const pkg = require("../package.json")
 const isDevelopment = process.env.NODE_ENV !== "production"
 const getPath = shortPath => path.resolve(__dirname, "..", shortPath)
 
-config = {
+base = {
   target: "node",
-  entry: getPath("./src/cli"),
   resolve: {
     extensions: [".js", ".jsx"],
     alias: {
@@ -14,13 +13,6 @@ config = {
     }
   },
   mode: isDevelopment ? "development" : "production",
-  output: {
-    path: getPath("build"),
-    filename: "cli.js",
-    library: pkg.name,
-    libraryTarget: "umd",
-    umdNamedDefine: true
-  },
   externals: Object.keys(pkg.dependencies),
   module: {
     exprContextCritical: false,
@@ -41,12 +33,16 @@ config = {
 }
 
 if (isDevelopment) {
-  config.devtool = "eval"
+  base.devtool = "eval"
 } else {
-  config.optimization = {
+  base.optimization = {
     moduleIds: "total-size"
   }
 }
 
-
-module.exports = config
+module.exports = {
+  base,
+  pkg,
+  isDevelopment,
+  getPath
+}

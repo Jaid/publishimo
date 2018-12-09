@@ -43,11 +43,11 @@ export default options => {
   }
 
   if (!config) {
-    const humanizedSearchPlaces = searchPlaces.map((place, i) => i ? place : `package.json ("${name}" key)`).join(", ")
-    throw Error(`Could not find a valid ${name} configuration. Looked for files named: ${humanizedSearchPlaces}`)
+    // const humanizedSearchPlaces = searchPlaces.map((place, i) => i ? place : `package.json ("${name}" key)`).join(", ")
+    // throw Error(`Could not find a valid ${name} configuration. Looked for files named: ${humanizedSearchPlaces}`)
   }
 
-  const completeConfig = exConfig.load(config)
+  const completeConfig = exConfig.load(config || {})
 
   return {
     pkg,
