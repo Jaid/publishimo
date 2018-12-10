@@ -20,11 +20,6 @@
   "eslintConfig": {
     "extends": "./config/eslint.js"
   },
-  "jest": {
-    "setupFiles": [
-      "jest-plugin-fs/setup"
-    ]
-  },
   "dependencies": {
     "cosmiconfig": "^5.0.7",
     "ex-config": "^1.0.11",

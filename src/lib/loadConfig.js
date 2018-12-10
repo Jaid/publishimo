@@ -9,10 +9,7 @@ const name = "publishimo"
 // config
 // package
 export default options => {
-  const pkg = readPkgUp.sync({cwd: options.cwd})?.pkg
-  if (!pkg) {
-    throw Error("Could not find package.json")
-  }
+  const pkg = readPkgUp.sync({cwd: options.cwd})?.pkg || {}
 
   const exConfig = new ExConfig
 
@@ -40,11 +37,6 @@ export default options => {
     config = explorer.loadSync(pkg[name])?.config
   } else {
     config = explorer.searchSync()?.config
-  }
-
-  if (!config) {
-    // const humanizedSearchPlaces = searchPlaces.map((place, i) => i ? place : `package.json ("${name}" key)`).join(", ")
-    // throw Error(`Could not find a valid ${name} configuration. Looked for files named: ${humanizedSearchPlaces}`)
   }
 
   const completeConfig = exConfig.load(config || {})

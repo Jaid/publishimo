@@ -1,6 +1,7 @@
 import {reduce, isNil, isFunction} from "lodash"
+import sortKeys from "sort-keys"
 
-export default (rawPackage, rawConfig) => {
+export default (cwd, rawPackage, rawConfig) => {
   const config = {}
   const configMeta = {}
 
@@ -35,6 +36,7 @@ export default (rawPackage, rawConfig) => {
    */
   for (const [field, processor] of Object.entries(processors)) {
     const result = processor.prepare?.({
+      cwd,
       rawConfig,
       rawPackage,
       getAny: (key = field) => rawConfig[key] || rawPackage[key]
@@ -57,6 +59,7 @@ export default (rawPackage, rawConfig) => {
       }
     } else {
       result = processor.apply({
+        cwd,
         configMeta,
         rawConfig,
         rawPackage,
@@ -69,5 +72,5 @@ export default (rawPackage, rawConfig) => {
     }
   }
 
-  return config
+  return config |> sortKeys
 }
