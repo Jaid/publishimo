@@ -1,3 +1,2 @@
-node_js: node
-script: # && instead of YAML array, see: https://github.com/travis-ci/travis-ci/issues/1066
-  - yarn && yarn test
+node_js:
+  - node
