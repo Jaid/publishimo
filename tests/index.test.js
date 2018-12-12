@@ -1,35 +1,39 @@
 import publishimo from "../build"
 import jestFs, {mock as fs} from "jest-plugin-fs"
-// import fs from 'jest-plugin-fs';
-
-// This installs the mock for 'fs'.
-jest.mock("fs", () => require("jest-plugin-fs/mock"));
-
 import path from "path"
 import readdirRecursive from "fs-readdir-recursive"
+import os from "os"
+
+jest.mock("fs", () => require("jest-plugin-fs/mock"));
 
 const getPackageDir = name => {
   const packageDir = path.resolve(__dirname, "packages", name)
-  jestFs.restore()
   console.log(packageDir)
-  console.log(readdirRecursive(packageDir))
-  jestFs.mock()
-  jestFs.unmock(readdirRecursive(packageDir).map(file => `${packageDir}/${file}`))
-  console.log(readdirRecursive(packageDir))
-  console.log(jestFs.files())
+  jestFs.unmock(readdirRecursive(packageDir))
+  fs.mkdirSync(packageDir, {recursive: true})
   return packageDir
 }
 
 describe("File system tests", () => {
   beforeEach(() => jestFs.mock())
-  afterEach(() => jestFs.restore())
-  test("Zero configuration", () => {
-    // const packageDir = getPackageDir("zero-config")
-    jestFs.restore()
-    fs.writeFileSync("a.txt", "a")
+  afterEach(jestFs.restore)
+  it("should generate release without package.json and publishimo.yml", () => {
+    const name = "zero-config"
+    const cwd = getPackageDir(name)
+    expect.stringContaining(cwd, path.separator)
+    const releaseDir = path.resolve(os.tmpdir(), name)
+    expect.stringContaining(releaseDir, path.separator)
     publishimo({
-      cwd: packageDir
+      cwd,
+      releaseDir
     })
-    console.log(readdirRecursive(packageDir))
+    const pkgFile = path.resolve(releaseDir, "package.json")
+    expect.stringContaining(pkgFile, path.separator)
+    expect(fs.existsSync(pkgFile)).toBe(true)
+    const pkg = JSON.parse(fs.readFileSync(pkgFile, "utf8"))
+    expect(pkg).toMatchObject({
+      name,
+      version: "1.0.0"
+    })
   })
 })

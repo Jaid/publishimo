@@ -23,7 +23,7 @@ export default options => {
   const generatedPackage = generatePackage(options.cwd, pkg, config)
 
   if (!fs.existsSync(options.releaseDir)) {
-    fs.mkdirSync(options.releaseDir)
+    fs.mkdirSync(options.releaseDir, {recursive: true})
   }
   fs.writeFileSync(path.resolve(options.releaseDir, "package.json"), JSON.stringify(generatedPackage))
 }
