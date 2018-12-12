@@ -1,2 +1,2 @@
 script: # && instead of YAML array, see: https://github.com/travis-ci/travis-ci/issues/1066
-  - yarn build-prod && yarn test
+  - yarn && yarn test
