@@ -3,6 +3,7 @@ import jestFs, {mock as fs} from "jest-plugin-fs"
 import path from "path"
 import os from "os"
 
+const releaseDir = path.resolve(os.tmpdir(), "publishimo/test-release")
 jest.mock("fs", () => require("jest-plugin-fs/mock"));
 
 // Jesus, Jest's fs mocking implementation is terrible to work with
@@ -13,7 +14,10 @@ const getPackageDir = (name, files = null) => {
   if (files) {
     files = files.map(file => path.resolve(packageDir, file))
   } else {
-    files = require.requireActual("fs").readdirSync(packageDir, {withFileTypes: true})
+    files = require.requireActual("fs").readdirSync(packageDir, {
+      withFileTypes: true,
+      recursive: true
+    })
       .filter(dirent => !dirent.isDirectory())
       .map(dirent => path.resolve(packageDir, dirent.name))
   }
@@ -24,11 +28,32 @@ const getPackageDir = (name, files = null) => {
 
 describe("File system tests", () => {
   afterEach(jestFs.restore)
+  it("should generate release on a basic environment", () => {
+    const name = "basic"
+    const cwd = getPackageDir(name, [
+      "src/index.js",
+      "config/publishimo.js",
+      "package.json",
+      "version.yml"
+    ])
+    expect.stringContaining(cwd, path.separator)
+    expect.stringContaining(releaseDir, path.separator)
+    publishimo({
+      cwd,
+      releaseDir
+    })
+    const pkgFile = path.resolve(releaseDir, "package.json")
+    expect.stringContaining(pkgFile, path.separator)
+    expect(fs.existsSync(pkgFile)).toBe(true)
+    const pkg = JSON.parse(fs.readFileSync(pkgFile, "utf8"))
+    expect(pkg).toMatchObject({
+      name
+    })
+  })
   it("should generate release without package.json and publishimo.yml", () => {
     const name = "zero-config"
     const cwd = getPackageDir(name)
     expect.stringContaining(cwd, path.separator)
-    const releaseDir = path.resolve(os.tmpdir(), name)
     expect.stringContaining(releaseDir, path.separator)
     publishimo({
       cwd,
@@ -46,18 +71,31 @@ describe("File system tests", () => {
   it("should generate release without package.json", () => {
     const name = "no-package-json"
     const cwd = getPackageDir(name)
-    const releaseDir = path.resolve(os.tmpdir(), name)
     const result = publishimo({
       cwd,
       releaseDir
     })
-    console.log(result)
     const pkg = JSON.parse(fs.readFileSync(path.resolve(releaseDir, "package.json"), "utf8"))
     expect(pkg).toMatchObject({
       name,
       version: "1.0.0",
       author: {
         name: "Pikachu"
+      }
+    })
+  })
+  it("should generate release without publishimo.yml", () => {
+    const name = "no-publishimo-config"
+    const cwd = getPackageDir(name)
+    const result = publishimo({
+      cwd,
+      releaseDir
+    })
+    const pkg = JSON.parse(fs.readFileSync(path.resolve(releaseDir, "package.json"), "utf8"))
+    expect(pkg).toMatchObject({
+      name,
+      author: {
+        name: "Charles Dickens"
       }
     })
   })

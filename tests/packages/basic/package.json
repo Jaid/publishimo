@@ -1,0 +1,7 @@
+{
+  "publishimo": "config/publishimo.js",
+  "license": "MIT",
+  "devDependencies": {
+    "js-yaml": "^3.12.0"
+  }
+}

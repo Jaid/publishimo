@@ -1,0 +1,8 @@
+{
+  "author": "Charles Dickens",
+  "dependencies": {
+    "past": "*",
+    "present": "*",
+    "future": "*"
+  }
+}
