@@ -51,6 +51,7 @@ describe("File system tests", () => {
       cwd,
       releaseDir
     })
+    console.log(result)
     const pkg = JSON.parse(fs.readFileSync(path.resolve(releaseDir, "package.json"), "utf8"))
     expect(pkg).toMatchObject({
       name,

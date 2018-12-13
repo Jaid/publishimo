@@ -41,7 +41,7 @@ export default options => {
   }
 
   const config = exConfig.load(loadedConfig?.config || {})
-  const configPath = loadedConfig?.path
+  const configPath = loadedConfig?.filepath
 
   return {
     pkg,
