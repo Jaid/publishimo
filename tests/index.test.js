@@ -14,10 +14,7 @@ const getPackageDir = (name, files = null) => {
   if (files) {
     files = files.map(file => path.resolve(packageDir, file))
   } else {
-    files = require.requireActual("fs").readdirSync(packageDir, {
-      withFileTypes: true,
-      recursive: true
-    })
+    files = require.requireActual("fs").readdirSync(packageDir, {withFileTypes: true})
       .filter(dirent => !dirent.isDirectory())
       .map(dirent => path.resolve(packageDir, dirent.name))
   }
@@ -26,19 +23,20 @@ const getPackageDir = (name, files = null) => {
   return packageDir
 }
 
-describe("File system tests", () => {
+describe("Tests with mocked fs", () => {
   afterEach(jestFs.restore)
   it("should generate release on a basic environment", () => {
     const name = "basic"
     const cwd = getPackageDir(name, [
       "src/index.js",
+      "src/lib/greet.js",
       "config/publishimo.js",
       "package.json",
       "version.yml"
     ])
     expect.stringContaining(cwd, path.separator)
     expect.stringContaining(releaseDir, path.separator)
-    publishimo({
+    const result = publishimo({
       cwd,
       releaseDir
     })
@@ -46,23 +44,51 @@ describe("File system tests", () => {
     expect.stringContaining(pkgFile, path.separator)
     expect(fs.existsSync(pkgFile)).toBe(true)
     const pkg = JSON.parse(fs.readFileSync(pkgFile, "utf8"))
-    expect(pkg).toMatchObject({
-      name
+    console.log(result)
+    const expectedAuthorName = "Jaid"
+    expect(result).toMatchObject({
+      generatedPackage:
+       {
+         name,
+         version: "1.2.3",
+         author: {
+           name: expectedAuthorName,
+           url: `https://github.com/${expectedAuthorName}`
+         },
+         homepage: `https://github.com/${expectedAuthorName}/${name}`,
+         repository: `github:${expectedAuthorName}/${name}`,
+         bugs: `https://github.com/${expectedAuthorName}/${name}/issues`,
+         license: "MIT"
+       },
+      pkg:
+       {
+         name,
+         publishimo: "config/publishimo.js",
+         license: "MIT",
+         version: ""
+       },
+      pkgPath: expect.stringContaining(`/${name}/package.json`),
+      config: {
+        author: {
+          name: expectedAuthorName,
+          github: true
+        },
+        version: "1.2.3"
+      },
+      configPath: expect.stringContaining(`/${name}/config/publishimo.js`),
+      outputDir: expect.stringContaining("/"),
+      cwd: expect.stringContaining(`/${name}`)
     })
   })
   it("should generate release without package.json and publishimo.yml", () => {
     const name = "zero-config"
     const cwd = getPackageDir(name)
-    expect.stringContaining(cwd, path.separator)
-    expect.stringContaining(releaseDir, path.separator)
     publishimo({
       cwd,
       releaseDir
     })
-    const pkgFile = path.resolve(releaseDir, "package.json")
-    expect.stringContaining(pkgFile, path.separator)
-    expect(fs.existsSync(pkgFile)).toBe(true)
-    const pkg = JSON.parse(fs.readFileSync(pkgFile, "utf8"))
+    const pkg = JSON.parse(fs.readFileSync(path.resolve(releaseDir, "package.json"), "utf8"))
+    expect(Object.keys(pkg).length).toBe(2)
     expect(pkg).toMatchObject({
       name,
       version: "1.0.0"
@@ -71,7 +97,7 @@ describe("File system tests", () => {
   it("should generate release without package.json", () => {
     const name = "no-package-json"
     const cwd = getPackageDir(name)
-    const result = publishimo({
+    publishimo({
       cwd,
       releaseDir
     })
@@ -87,7 +113,7 @@ describe("File system tests", () => {
   it("should generate release without publishimo.yml", () => {
     const name = "no-publishimo-config"
     const cwd = getPackageDir(name)
-    const result = publishimo({
+    publishimo({
       cwd,
       releaseDir
     })
