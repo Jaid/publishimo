@@ -19,11 +19,21 @@ export default options => {
   if (cwdStat.isFile()) {
     options.cwd = options.cwd |> path.dirname
   }
-  const {pkg, config} = loadConfig(options)
+  const {pkg, pkgPath, config, configPath} = loadConfig(options)
   const generatedPackage = generatePackage(options.cwd, pkg, config)
 
   if (!fs.existsSync(options.releaseDir)) {
     fs.mkdirSync(options.releaseDir, {recursive: true})
   }
   fs.writeFileSync(path.resolve(options.releaseDir, "package.json"), JSON.stringify(generatedPackage))
+
+  return {
+    generatedPackage,
+    pkg,
+    pkgPath,
+    config,
+    configPath,
+    outputDir: options.releaseDir,
+    cwd: options.cwd
+  }
 }

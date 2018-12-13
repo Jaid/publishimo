@@ -1,16 +1,21 @@
 import collectObjects from "lib/collectObjects"
 import cleanAuthor from "lib/cleanAuthor"
 import getGithubProfile from "lib/getGithubProfile"
-
+import {isString} from "lodash"
 
 export const prepare = ({rawConfig, rawPackage}) => {
   const authors = collectObjects([rawConfig.author, rawPackage.author, rawConfig.authors, rawPackage.authors, rawConfig.maintainer, rawPackage.maintainer, rawConfig.maintainers, rawPackage.maintainers, rawConfig.contributors, rawPackage.contributors])
     .map(rawAuthor => {
-      const author = {
-        name: rawAuthor.name,
-        email: rawAuthor.email,
-        url: rawAuthor.url || rawAuthor.website,
-        primary: rawAuthor.primary
+      let author
+      if (rawAuthor |> isString) {
+        author = {name: rawAuthor}
+      } else {
+        author = {
+          name: rawAuthor.name,
+          email: rawAuthor.email,
+          url: rawAuthor.url || rawAuthor.website,
+          primary: rawAuthor.primary
+        }
       }
       if (!author.url) {
         const githubUrl = getGithubProfile(rawAuthor.name, rawAuthor.github)

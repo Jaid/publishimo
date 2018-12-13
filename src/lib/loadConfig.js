@@ -9,7 +9,9 @@ const name = "publishimo"
 // config
 // package
 export default options => {
-  const pkg = readPkgUp.sync({cwd: options.cwd})?.pkg || {}
+  const loadedPkg = readPkgUp.sync({cwd: options.cwd})
+  const pkg = loadedPkg?.pkg || {}
+  const pkgPath = loadedPkg?.path
 
   const exConfig = new ExConfig
 
@@ -25,24 +27,26 @@ export default options => {
     `.${name}.yaml`,
     `.${name}.yml`
   ]
-  const explorer = cosmiconfig(name, {
-    searchPlaces,
-    cwd: options.cwd
-  })
+  // const explorer = cosmiconfig(name, {searchPlaces})
+  const explorer = cosmiconfig(name, {searchPlaces})
 
-  let config
+  let loadedConfig
+
   if (options.config) {
-    config = explorer.loadSync(options.config)?.config
+    loadedConfig = explorer.loadSync(options.config)
   } else if (pkg[name] |> isString) {
-    config = explorer.loadSync(pkg[name])?.config
+    loadedConfig = explorer.loadSync(pkg[name])
   } else {
-    config = explorer.searchSync()?.config
+    loadedConfig = explorer.searchSync(options.cwd)
   }
 
-  const completeConfig = exConfig.load(config || {})
+  const config = exConfig.load(loadedConfig?.config || {})
+  const configPath = loadedConfig?.path
 
   return {
     pkg,
-    config: completeConfig
+    pkgPath,
+    config,
+    configPath
   }
 }
