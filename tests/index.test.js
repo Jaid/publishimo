@@ -34,14 +34,14 @@ describe("Tests with mocked fs", () => {
       "package.json",
       "version.yml"
     ])
-    expect.stringContaining(cwd, path.separator)
-    expect.stringContaining(releaseDir, path.separator)
+    expect.stringContaining(cwd, path.sep)
+    expect.stringContaining(releaseDir, path.sep)
     const result = publishimo({
       cwd,
       releaseDir
     })
     const pkgFile = path.resolve(releaseDir, "package.json")
-    expect.stringContaining(pkgFile, path.separator)
+    expect.stringContaining(pkgFile, path.sep)
     expect(fs.existsSync(pkgFile)).toBe(true)
     const pkg = JSON.parse(fs.readFileSync(pkgFile, "utf8"))
     console.log(result)
@@ -67,7 +67,7 @@ describe("Tests with mocked fs", () => {
          license: "MIT",
          version: ""
        },
-      pkgPath: expect.stringContaining(`${path.separator}${name}${path.separator}package.json`),
+      pkgPath: expect.stringContaining(`${path.sep}${name}${path.sep}package.json`),
       config: {
         author: {
           name: expectedAuthorName,
@@ -75,9 +75,9 @@ describe("Tests with mocked fs", () => {
         },
         version: "1.2.3"
       },
-      configPath: expect.stringContaining(`${path.separator}${name}${path.separator}config${path.separator}publishimo.js`),
-      outputDir: expect.stringContaining(path.separator),
-      cwd: expect.stringContaining(`${path.separator}${name}`)
+      configPath: expect.stringContaining(`${path.sep}${name}${path.sep}config${path.sep}publishimo.js`),
+      outputDir: expect.stringContaining(path.sep),
+      cwd: expect.stringContaining(`${path.sep}${name}`)
     })
   })
   it("should generate release without package.json and publishimo.yml", () => {
