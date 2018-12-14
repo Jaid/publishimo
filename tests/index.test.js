@@ -67,7 +67,7 @@ describe("Tests with mocked fs", () => {
          license: "MIT",
          version: ""
        },
-      pkgPath: expect.stringContaining(`/${name}/package.json`),
+      pkgPath: expect.stringContaining(`${path.separator}${name}${path.separator}package.json`),
       config: {
         author: {
           name: expectedAuthorName,
@@ -75,9 +75,9 @@ describe("Tests with mocked fs", () => {
         },
         version: "1.2.3"
       },
-      configPath: expect.stringContaining(`/${name}/config/publishimo.js`),
-      outputDir: expect.stringContaining("/"),
-      cwd: expect.stringContaining(`/${name}`)
+      configPath: expect.stringContaining(`${path.separator}${name}${path.separator}config${path.separator}publishimo.js`),
+      outputDir: expect.stringContaining(path.separator),
+      cwd: expect.stringContaining(`${path.separator}${name}`)
     })
   })
   it("should generate release without package.json and publishimo.yml", () => {
