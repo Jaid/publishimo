@@ -6,6 +6,6 @@ os:
   - osx
 language: node_js
 node_js:
-  - node
-  - 8
+  - node # Latest stable
+  - lts/* # Latest LTS
 cache: yarn # From https://docs.travis-ci.com/user/languages/javascript-with-nodejs/#using-yarn
