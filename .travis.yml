@@ -1,6 +1,11 @@
 os:
   - linux
-  - windows
+# Windows isn't working for some reason
+# Tests don't fail, but the job just doesn't finish
+# Example job: https://travis-ci.org/Jaid/publishimo/jobs/467847002
+#  - windows
   - osx
 language: node_js
-node_js: [ node ]
+node_js:
+  - node
+  - 8
