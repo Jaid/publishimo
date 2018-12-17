@@ -1,5 +1,5 @@
 import publishimo from "../build"
-import getObjectFromDirectory from "./lib/getObjectFromDirectory"
+import addFileToObject from "./lib/addFileToObject"
 import jestFs, {mock as fs} from "jest-plugin-fs"
 import path from "path"
 import os from "os"
@@ -10,16 +10,16 @@ jest.mock("fs", () => require("jest-plugin-fs/mock"));
 // Jesus, Jest's fs mocking implementation is terrible to work with
 // Here we choose the name of a tests/packages directory and load specified contained files into the virtual file system
 // Keeping track of TODO
-const getPackageDir = (name, files = null) => {
+const getPackageDir = name => {
   const packageDir = path.resolve(__dirname, "packages", name)
-  if (files) {
-    files = files.map(file => path.resolve(packageDir, file))
-  } else {
-    files = require.requireActual("fs").readdirSync(packageDir, {withFileTypes: true})
-      .filter(dirent => !dirent.isDirectory())
-      .map(dirent => path.resolve(packageDir, dirent.name))
-  }
-  jestFs.unmock(files)
+  const objectRepresentation = {}
+  addFileToObject(packageDir, objectRepresentation)
+  console.log({
+    [packageDir]: objectRepresentation[name]
+  })
+  jestFs.mock({
+    [packageDir]: objectRepresentation[name]
+  })
   fs.mkdirSync(packageDir, {recursive: true})
   return packageDir
 }
@@ -28,14 +28,7 @@ describe("Tests with mocked fs", () => {
   afterEach(jestFs.restore)
   it("should generate release on a basic environment", () => {
     const name = "basic"
-    console.log(getObjectFromDirectory(path.resolve(__dirname, "packages", name)))
-    const cwd = getPackageDir(name, [
-      "src/index.js",
-      "src/lib/greet.js",
-      "config/publishimo.js",
-      "package.json",
-      "version.yml"
-    ])
+    const cwd = getPackageDir(name)
     expect.stringContaining(cwd, path.sep)
     expect.stringContaining(releaseDir, path.sep)
     const result = publishimo({

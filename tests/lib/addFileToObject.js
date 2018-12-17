@@ -5,7 +5,6 @@ const addFileToObject = (file, object = {}) => {
   if (fs.statSync(file).isDirectory()) {
     const directoryName = file |> path.basename
     object[directoryName] = {}
-    console.log(directoryName)
     for (const entry of fs.readdirSync(file)) {
       const entryPath = path.resolve(file, entry)
       addFileToObject(entryPath, object[directoryName])
