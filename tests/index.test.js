@@ -1,4 +1,5 @@
 import publishimo from "../build"
+import getObjectFromDirectory from "./lib/getObjectFromDirectory"
 import jestFs, {mock as fs} from "jest-plugin-fs"
 import path from "path"
 import os from "os"
@@ -27,6 +28,7 @@ describe("Tests with mocked fs", () => {
   afterEach(jestFs.restore)
   it("should generate release on a basic environment", () => {
     const name = "basic"
+    console.log(getObjectFromDirectory(path.resolve(__dirname, "packages", name)))
     const cwd = getPackageDir(name, [
       "src/index.js",
       "src/lib/greet.js",
