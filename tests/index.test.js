@@ -14,9 +14,6 @@ const getPackageDir = name => {
   const packageDir = path.resolve(__dirname, "packages", name)
   const objectRepresentation = {}
   addFileToObject(packageDir, objectRepresentation)
-  console.log({
-    [packageDir]: objectRepresentation[name]
-  })
   jestFs.mock({
     [packageDir]: objectRepresentation[name]
   })
