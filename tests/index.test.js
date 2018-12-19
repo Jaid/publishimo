@@ -36,22 +36,22 @@ describe("Tests with mocked fs", () => {
     expect.stringContaining(pkgFile, path.sep)
     expect(fs.existsSync(pkgFile)).toBe(true)
     const pkg = JSON.parse(fs.readFileSync(pkgFile, "utf8"))
-    console.log(result)
     const expectedAuthorName = "Jaid"
+    const expectedPkg = {
+      name,
+      version: "1.2.3",
+      author: {
+        name: expectedAuthorName,
+        url: `https://github.com/${expectedAuthorName}`
+      },
+      homepage: `https://github.com/${expectedAuthorName}/${name}`,
+      repository: `github:${expectedAuthorName}/${name}`,
+      bugs: `https://github.com/${expectedAuthorName}/${name}/issues`,
+      license: "MIT"
+    }
+    expect(pkg).toMatchObject(expectedPkg)
     expect(result).toMatchObject({
-      generatedPackage:
-       {
-         name,
-         version: "1.2.3",
-         author: {
-           name: expectedAuthorName,
-           url: `https://github.com/${expectedAuthorName}`
-         },
-         homepage: `https://github.com/${expectedAuthorName}/${name}`,
-         repository: `github:${expectedAuthorName}/${name}`,
-         bugs: `https://github.com/${expectedAuthorName}/${name}/issues`,
-         license: "MIT"
-       },
+      generatedPackage: expectedPkg,
       pkg:
        {
          name,
@@ -71,6 +71,7 @@ describe("Tests with mocked fs", () => {
       outputDir: expect.stringContaining(path.sep),
       cwd: expect.stringContaining(`${path.sep}${name}`)
     })
+    console.log(result)
   })
   it("should generate release without package.json and publishimo.yml", () => {
     const name = "zero-config"
