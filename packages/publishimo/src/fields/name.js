@@ -1,6 +1,7 @@
-import cleanString from "lib/cleanString"
 import fs from "fs"
 import path from "path"
+
+import cleanString from "lib/cleanString"
 
 export const prepare = ({getAny}) => getAny()
 

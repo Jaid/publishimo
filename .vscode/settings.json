@@ -1,1 +1,4 @@
-{}
+{
+  "npm.packageManager": "npm",
+  "eslint.packageManager": "npm"
+}

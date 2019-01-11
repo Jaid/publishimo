@@ -5,7 +5,7 @@ const githubUrl = "https://github.com"
 
 export default (name, githubValue) => {
   if (isNil(githubValue)) {
-    return
+    return null
   }
   if (githubValue === true) { // github: true
     return `${githubUrl}/${name.replace(" ", "")}`

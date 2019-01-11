@@ -5,7 +5,7 @@ export const apply = ({myMeta, configMeta}) => {
   if (myMeta) {
     return myMeta
   }
-  const repoInfo = configMeta.repository?.repoInfo
+  const repoInfo = configMeta.repository ?.repoInfo
   if (repoInfo) {
     return repoInfo.bugs() |> cleanUrl
   }

@@ -19,7 +19,7 @@ export const prepare = ({getAny}) => {
       const repoInfo = gitInfo.fromUrl(url)
       return {
         repoInfo,
-        value: repoInfo.shortcut()
+        value: repoInfo.shortcut(),
       }
     }
   }

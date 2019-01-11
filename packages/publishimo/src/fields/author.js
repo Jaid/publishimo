@@ -14,7 +14,7 @@ export const prepare = ({rawConfig, rawPackage}) => {
           name: rawAuthor.name,
           email: rawAuthor.email,
           url: rawAuthor.url || rawAuthor.website,
-          primary: rawAuthor.primary
+          primary: rawAuthor.primary,
         }
       }
       if (!author.url) {
@@ -43,7 +43,7 @@ export const prepare = ({rawConfig, rawPackage}) => {
 
   return {
     author,
-    contributors
+    contributors,
   }
 }
 

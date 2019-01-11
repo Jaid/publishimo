@@ -13,7 +13,9 @@ packages/*/yarn-error.log
 
 # npm
 /npm-debug.log
+/npm-debug.log.*
 packages/*/npm-debug.log
+packages/*/npm-debug.log.*
 
 # pnpm
 /shrinkwrap.yaml

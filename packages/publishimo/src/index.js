@@ -1,14 +1,16 @@
-import generatePackage from "./generatePackage"
-import loadConfig from "lib/loadConfig"
-import {defaults, isUndefined} from "lodash"
 import fs from "fs"
 import path from "path"
+
+import {defaults, isUndefined} from "lodash"
+import loadConfig from "lib/loadConfig"
+
+import generatePackage from "./generatePackage"
 
 export default options => {
   options = defaults(options, {
     cwd: process.cwd(),
     config: null,
-    entry: "index.js"
+    entry: "index.js",
   })
 
   if (isUndefined(options.releaseDir)) {
@@ -34,6 +36,6 @@ export default options => {
     config,
     configPath,
     outputDir: options.releaseDir,
-    cwd: options.cwd
+    cwd: options.cwd,
   }
 }

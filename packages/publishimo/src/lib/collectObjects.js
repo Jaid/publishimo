@@ -12,7 +12,7 @@ export default (sources, addNullish = false) => {
   const collection = []
   for (const source of sources) {
     if (!addNullish && isNil(source)) {
-      continue;
+      continue
     }
 
     if (isArray(source)) {

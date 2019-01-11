@@ -22,7 +22,7 @@ export default (cwd, rawPackage, rawConfig) => {
     "peerDependencies",
     "bundleDependencies",
     "optionalDependencies",
-    "keywords"
+    "keywords",
   ]
 
   const processors = reduce(fields, (object, field) => {
@@ -35,11 +35,11 @@ export default (cwd, rawPackage, rawConfig) => {
    * The existence of a "prepare" function is optional, hence the weird looking optional chaining syntax
    */
   for (const [field, processor] of Object.entries(processors)) {
-    const result = processor.prepare?.({
+    const result = processor.prepare ?.({
       cwd,
       rawConfig,
       rawPackage,
-      getAny: (key = field) => rawConfig[key] || rawPackage[key]
+      getAny: (key = field) => rawConfig[key] || rawPackage[key],
     })
     if (!isNil(result)) {
       configMeta[field] = result
@@ -64,7 +64,7 @@ export default (cwd, rawPackage, rawConfig) => {
         rawConfig,
         rawPackage,
         myMeta: configMeta[field],
-        getAny: (key = field) => rawConfig[key] || rawPackage[key]
+        getAny: (key = field) => rawConfig[key] || rawPackage[key],
       })
     }
     if (!isNil(result)) {
