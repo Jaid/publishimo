@@ -1,11 +1,10 @@
-env:
-  - YARN_GPG=no # Avoiding Windows timeout, see https://travis-ci.community/t/build-doesnt-finish-after-completing-tests/288/13
-os:
-  - linux
-  - windows
-  - osx
 language: node_js
 node_js:
   - node # Latest stable
   - lts/* # Latest LTS
-cache: yarn # From https://docs.travis-ci.com/user/languages/javascript-with-nodejs/#using-yarn
+os:
+  - linux
+  - windows
+  - osx
+before_install:
+  - npm install --global lerna

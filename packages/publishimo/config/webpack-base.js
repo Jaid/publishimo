@@ -2,7 +2,7 @@ const path = require("path");
 const pkg = require("../package.json")
 
 const isDevelopment = process.env.NODE_ENV !== "production"
-const _getPath = shortPath => path.resolve(__dirname, "..", shortPath)
+const getPath = shortPath => path.resolve(__dirname, "..", shortPath)
 
 base = {
   target: "node",
