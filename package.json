@@ -1,16 +1,60 @@
 {
-  "name": "root",
-  "private": true,
-  "devDependencies": {
-    "babel-eslint": "^10.0.1",
-    "eslint": "^5.12.0",
-    "eslint-config-jaid": "^1.8.1",
-    "lerna": "^3.10.5"
+  "name": "publishimo",
+  "version": "2.0.0",
+  "license": "MIT",
+  "author": {
+    "name": "Jaid",
+    "url": "https://github.com/jaid",
+    "email": "jaid.jsx@gmail.com"
   },
-  "engines": {
-    "node": ">10.0.0"
+  "repository": "https://github.com/Jaid/publishimo",
+  "description": "Enhances the published version of your NodeJS package",
+  "main": "build/index.js",
+  "bin": "build/cli.js",
+  "files": [
+    "build/*"
+  ],
+  "dependencies": {
+    "cosmiconfig": "^5.0.7",
+    "ex-config": "^1.0.12",
+    "hosted-git-info": "^2.7.1",
+    "lodash": "^4.17.11",
+    "normalize-diacritics": "^0.5.1",
+    "normalize-url": "^4.1.0",
+    "obj-clean": "^2.0.0",
+    "parse-author": "^2.0.0",
+    "read-pkg-up": "^4.0.0",
+    "sort-keys": "^2.0.0"
+  },
+  "scripts": {
+    "build:prod": "cross-env NODE_ENV=production cross-env webpack --config config/webpack.config.babel.js",
+    "build:dev": "cross-env webpack --config config/webpack.config.babel.js",
+    "test:dev": "yarn build:dev && jest",
+    "test:debug": "yarn build:dev && cross-env node --inspect node_modules/jest/bin/jest.js --runInBand"
+  },
+  "babel": {
+    "presets": [
+      "jaid"
+    ]
   },
   "eslintConfig": {
     "extends": "jaid"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/register": "^7.0.0",
+    "babel-jest": "^23.6.0",
+    "cross-env": "^5.2.0",
+    "eslint": "^5.12.0",
+    "eslint-config-jaid": "^1.8.1",
+    "fs-readdir-recursive": "^1.1.0",
+    "jest": "^23.6.0",
+    "jest-plugin-fs": "^2.9.0",
+    "metro-memory-fs": "^0.51.1",
+    "mock-fs": "^4.7.0",
+    "webpack": "^4.28.4",
+    "webpack-cli": "^3.2.1",
+    "webpack-config-node": "^1.0.0",
+    "babel-preset-jaid": "^1.0.1"
   }
 }

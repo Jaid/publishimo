@@ -3,30 +3,21 @@
 
 # Node packages
 /node_modules/
-packages/*/node_modules/
 
 # Yarn
 /yarn.lock
 /yarn-error.log
-packages/*/yarn.lock
-packages/*/yarn-error.log
 
 # npm
 /npm-debug.log
 /npm-debug.log.*
-packages/*/npm-debug.log
-packages/*/npm-debug.log.*
 
 # pnpm
 /shrinkwrap.yaml
 
-# Lerna
-/lerna-debug.log
-/packages/*/package.json.lerna_backup
-
 # Generated or temporary content
-packages/*/build/
-packages/*/dist/
+/build/
+/dist/
 
 # IDEs
 # /.vscode/ # I'm using this!
