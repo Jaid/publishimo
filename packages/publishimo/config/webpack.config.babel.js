@@ -12,8 +12,8 @@ export default webpackConfigNode({
   extra: {
     resolve: {
       alias: {
-        lib: fromPackage("src/lib")
-      }
-    }
-  }
+        lib: fromPackage("src/lib"),
+      },
+    },
+  },
 })
