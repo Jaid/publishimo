@@ -33,7 +33,8 @@
     "test": "npm run build:prod && jest",
     "test:dev": "npm run build:dev && jest",
     "test:debug": "npm run build:dev && cross-env node --inspect node_modules/jest/bin/jest.js --runInBand",
-    "prepublishOnly": "npm run build:prod"
+    "prepublishOnly": "npm run build:prod",
+    "prepare": "jest --clearCache"
   },
   "babel": {
     "presets": [
