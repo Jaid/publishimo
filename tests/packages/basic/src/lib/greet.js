@@ -1,7 +1,7 @@
 const templates = {
   de: greetee => `Guten Morgen, ${greetee || "Welt"}!`,
   fi: greetee => `Hei, ${greetee || "maailma"}!`,
-  en: greetee => `Hello, ${greetee || "world"}!`
+  en: greetee => `Hello, ${greetee || "world"}!`,
 }
 
 export default (language, greetee) => {
