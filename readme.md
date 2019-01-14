@@ -1,4 +1,7 @@
 # publishimo
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/Jaid/publishimo.svg)](https://greenkeeper.io/)
+
 Generates a better package.json for published packages.
 
 ## API
