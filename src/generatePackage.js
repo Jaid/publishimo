@@ -1,9 +1,11 @@
-import {reduce, isNil, isFunction} from "lodash"
+import {isNil, isFunction} from "lodash"
 import sortKeys from "sort-keys"
 
-export default (cwd, rawPackage, rawConfig) => {
-  const config = {}
-  const configMeta = {}
+import arrayToObjectKeys from "./arrayToObjectKeys"
+
+export default (sourcePkg = {}, config = {}) => {
+  const generatedPkg = {}
+  const meta = {}
 
   const fields = [
     "name",
@@ -25,10 +27,7 @@ export default (cwd, rawPackage, rawConfig) => {
     "keywords",
   ]
 
-  const processors = reduce(fields, (object, field) => {
-    object[field] = require(`./fields/${field}`)
-    return object
-  }, {})
+  const processors = arrayToObjectKeys(fields, field => require(`./fields/${field}`))
 
   /*
    * Runs "prepare" first on every processor, so all processors can use each others meta data without being dependent on execution order
@@ -36,20 +35,19 @@ export default (cwd, rawPackage, rawConfig) => {
    */
   for (const [field, processor] of Object.entries(processors)) {
     const result = processor.prepare ?.({
-      cwd,
-      rawConfig,
-      rawPackage,
-      getAny: (key = field) => rawConfig[key] || rawPackage[key],
+      config,
+      sourcePkg,
+      getAny: (key = field) => config[key] || sourcePkg[key],
     })
     if (!isNil(result)) {
-      configMeta[field] = result
+      meta[field] = result
     }
   }
 
   for (const [field, processor] of Object.entries(processors)) {
     let result
     if (processor.applyMeta) {
-      const metaValue = configMeta[field]
+      const metaValue = meta[field]
       if (!isNil(metaValue)) {
         if (isFunction(processor.applyMeta)) {
           result = metaValue |> processor.applyMeta
@@ -59,18 +57,17 @@ export default (cwd, rawPackage, rawConfig) => {
       }
     } else {
       result = processor.apply({
-        cwd,
-        configMeta,
-        rawConfig,
-        rawPackage,
-        myMeta: configMeta[field],
-        getAny: (key = field) => rawConfig[key] || rawPackage[key],
+        meta,
+        config,
+        sourcePkg,
+        myMeta: meta[field],
+        getAny: (key = field) => config[key] || sourcePkg[key],
       })
     }
     if (!isNil(result)) {
-      config[field] = result
+      generatedPkg[field] = result
     }
   }
 
-  return config |> sortKeys
+  return generatedPkg |> sortKeys
 }

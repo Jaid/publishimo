@@ -8,26 +8,29 @@
     "email": "jaid.jsx@gmail.com"
   },
   "repository": "https://github.com/Jaid/publishimo",
-  "description": "Generates a package.json that is more suitable for publishing",
+  "description": "Generates a better package.json for published packages",
   "main": "dist/index.js",
   "files": [
     "dist/*"
   ],
   "dependencies": {
-    "cosmiconfig": "^5.0.7",
-    "ex-config": "^1.0.12",
     "hosted-git-info": "^2.7.1",
     "lodash": "^4.17.11",
+    "make-dir": "^1.3.0",
     "normalize-diacritics": "^0.5.1",
     "normalize-url": "^4.1.0",
     "obj-clean": "^2.0.0",
     "parse-author": "^2.0.0",
+    "read-package-json": "^2.0.13",
+    "read-pkg": "^4.0.1",
     "read-pkg-up": "^4.0.0",
-    "sort-keys": "^2.0.0"
+    "sort-keys": "^2.0.0",
+    "write-json-file": "^3.0.2"
   },
   "scripts": {
     "build:prod": "cross-env NODE_ENV=production cross-env webpack --config config/webpack.config.babel.js",
     "build:dev": "cross-env webpack --config config/webpack.config.babel.js",
+    "test": "npm run build:prod && jest",
     "test:dev": "npm run build:dev && jest",
     "test:debug": "npm run build:dev && cross-env node --inspect node_modules/jest/bin/jest.js --runInBand",
     "prepublishOnly": "npm run build:prod"
@@ -43,18 +46,20 @@
   "devDependencies": {
     "@babel/core": "^7.2.2",
     "@babel/register": "^7.0.0",
-    "babel-jest": "^23.6.0",
+    "babel-jest": "24.0.0-alpha.12",
+    "babel-preset-jaid": "^2.6.0",
     "cross-env": "^5.2.0",
     "eslint": "^5.12.0",
     "eslint-config-jaid": "^1.8.1",
     "fs-readdir-recursive": "^1.1.0",
-    "jest": "^23.6.0",
+    "jest": "24.0.0-alpha.12",
     "jest-plugin-fs": "^2.9.0",
+    "js-yaml": "^3.12.1",
+    "load-json-file": "^5.1.0",
     "metro-memory-fs": "^0.51.1",
     "mock-fs": "^4.7.0",
     "webpack": "^4.28.4",
     "webpack-cli": "^3.2.1",
-    "webpack-config-node": "^1.0.0",
-    "babel-preset-jaid": "^1.0.1"
+    "webpack-config-node": "^1.0.0"
   }
 }

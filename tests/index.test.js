@@ -1,21 +1,24 @@
-import publishimo from "../build"
-import addFileToObject from "./lib/addFileToObject"
-import jestFs, {mock as fs} from "jest-plugin-fs"
 import path from "path"
 import os from "os"
 
+import jestFs, {mock as fs} from "jest-plugin-fs"
+import loadJsonFile from "load-json-file"
+
+import publishimo from "../dist"
+
+import addFileToObject from "./lib/addFileToObject"
+
 const releaseDir = path.resolve(os.tmpdir(), "publishimo/test-release")
-jest.mock("fs", () => require("jest-plugin-fs/mock"));
+jest.mock("fs", () => require("jest-plugin-fs/mock"))
 
 // Jesus, Jest's fs mocking implementation is terrible to work with
 // Here we choose the name of a tests/packages directory and load specified contained files into the virtual file system
-// Keeping track of TODO
 const getPackageDir = name => {
   const packageDir = path.resolve(__dirname, "packages", name)
   const objectRepresentation = {}
   addFileToObject(packageDir, objectRepresentation)
   jestFs.mock({
-    [packageDir]: objectRepresentation[name]
+    [packageDir]: objectRepresentation[name],
   })
   fs.mkdirSync(packageDir, {recursive: true})
   return packageDir
@@ -24,98 +27,71 @@ const getPackageDir = name => {
 describe("Tests with mocked fs", () => {
   afterEach(jestFs.restore)
   it("should generate release on a basic environment", () => {
+    publishimo({
+      pkg: getPackageDir("basic"),
+      output: releaseDir,
+    })
+  })
+  it("should generate release and output without any mistake", () => {
     const name = "basic"
     const cwd = getPackageDir(name)
     expect.stringContaining(cwd, path.sep)
     expect.stringContaining(releaseDir, path.sep)
-    const result = publishimo({
-      cwd,
-      releaseDir
-    })
+    const options = {
+      config: {
+        author: {
+          name: "Jaid",
+          github: true,
+        },
+        version: "1.2.3",
+      },
+      pkg: cwd,
+      output: releaseDir,
+    }
+    const result = publishimo(options)
+    console.log(result)
     const pkgFile = path.resolve(releaseDir, "package.json")
     expect.stringContaining(pkgFile, path.sep)
     expect(fs.existsSync(pkgFile)).toBe(true)
-    const pkg = JSON.parse(fs.readFileSync(pkgFile, "utf8"))
+    const pkg = loadJsonFile.sync(pkgFile)
     const expectedAuthorName = "Jaid"
     const expectedPkg = {
       name,
       version: "1.2.3",
       author: {
         name: expectedAuthorName,
-        url: `https://github.com/${expectedAuthorName}`
+        url: `https://github.com/${expectedAuthorName}`,
       },
       homepage: `https://github.com/${expectedAuthorName}/${name}`,
       repository: `github:${expectedAuthorName}/${name}`,
       bugs: `https://github.com/${expectedAuthorName}/${name}/issues`,
-      license: "MIT"
+      license: "MIT",
     }
     expect(pkg).toMatchObject(expectedPkg)
     expect(result).toMatchObject({
-      generatedPackage: expectedPkg,
-      pkg:
-       {
-         name,
-         publishimo: "config/publishimo.js",
-         license: "MIT",
-         version: ""
-       },
-      pkgPath: expect.stringContaining(`${path.sep}${name}${path.sep}package.json`),
-      config: {
-        author: {
-          name: expectedAuthorName,
-          github: true
-        },
-        version: "1.2.3"
+      options,
+      generatedPkg: expectedPkg,
+      sourcePkg:
+      {
+        name,
+        publishimo: "config/publishimo.js",
+        license: "MIT",
+        version: "",
       },
-      configPath: expect.stringContaining(`${path.sep}${name}${path.sep}config${path.sep}publishimo.js`),
-      outputDir: expect.stringContaining(path.sep),
-      cwd: expect.stringContaining(`${path.sep}${name}`)
+      outputDir: expect.stringContaining(`${path.sep}test-release`),
+      outputPath: expect.stringContaining(`${path.sep}package.json`),
     })
     console.log(result)
   })
-  it("should generate release without package.json and publishimo.yml", () => {
-    const name = "zero-config"
-    const cwd = getPackageDir(name)
+  it("should generate release without any configuration", () => {
     publishimo({
-      cwd,
-      releaseDir
+      output: releaseDir,
     })
-    const pkg = JSON.parse(fs.readFileSync(path.resolve(releaseDir, "package.json"), "utf8"))
+    const pkg = loadJsonFile.sync(path.join(releaseDir, "package.json"))
     expect(Object.keys(pkg).length).toBe(2)
     expect(pkg).toMatchObject({
-      name,
-      version: "1.0.0"
-    })
-  })
-  it("should generate release without package.json", () => {
-    const name = "no-package-json"
-    const cwd = getPackageDir(name)
-    publishimo({
-      cwd,
-      releaseDir
-    })
-    const pkg = JSON.parse(fs.readFileSync(path.resolve(releaseDir, "package.json"), "utf8"))
-    expect(pkg).toMatchObject({
-      name,
+      name: "publishimo-output",
       version: "1.0.0",
-      author: {
-        name: "Pikachu"
-      }
-    })
-  })
-  it("should generate release without publishimo.yml", () => {
-    const name = "no-publishimo-config"
-    const cwd = getPackageDir(name)
-    publishimo({
-      cwd,
-      releaseDir
-    })
-    const pkg = JSON.parse(fs.readFileSync(path.resolve(releaseDir, "package.json"), "utf8"))
-    expect(pkg).toMatchObject({
-      name,
-      author: {
-        name: "Charles Dickens"
-      }
     })
   })
 })
