@@ -8,7 +8,6 @@ const fromPackage = directive => path.resolve(__dirname, "..", directive)
 export default webpackConfigNode({
   isDevelopment,
   packageRoot: path.resolve(__dirname, ".."),
-  lib: true,
   extra: {
     devtool: "inline-source-map",
     resolve: {
