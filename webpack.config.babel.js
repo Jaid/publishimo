@@ -9,7 +9,6 @@ export default webpackConfigNode({
   isDevelopment,
   packageRoot: path.resolve(__dirname, ".."),
   extra: {
-    devtool: "inline-source-map",
     resolve: {
       alias: {
         lib: fromPackage("src/lib"),

@@ -1,6 +1,6 @@
 {
   "name": "publishimo",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "license": "MIT",
   "author": {
     "name": "Jaid",
@@ -28,8 +28,8 @@
     "write-json-file": "^3.0.2"
   },
   "scripts": {
-    "build:prod": "cross-env NODE_ENV=production cross-env webpack --config config/webpack.config.babel.js",
-    "build:dev": "cross-env webpack --config config/webpack.config.babel.js",
+    "build:prod": "cross-env NODE_ENV=production cross-env webpack",
+    "build:dev": "cross-env webpack",
     "test": "npm run build:prod && jest",
     "test:dev": "npm run build:dev && jest",
     "test:debug": "npm run build:dev && cross-env node --inspect node_modules/jest/bin/jest.js --runInBand",
