@@ -61,6 +61,6 @@
     "mock-fs": "^4.7.0",
     "webpack": "^4.28.4",
     "webpack-cli": "^3.2.1",
-    "webpack-config-node": "1.2.0"
+    "webpack-config-node": "1.3.0"
   }
 }
