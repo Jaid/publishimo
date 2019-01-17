@@ -49,7 +49,7 @@ describe("Tests with mocked fs", () => {
       output: releaseDir,
     }
     const result = publishimo(options)
-    console.log(result)
+    require.requireActual("fs").writeFileSync(path.resolve(__dirname, "..", "dist", "test-result.json"), JSON.stringify(result, null, 2))
     const pkgFile = path.resolve(releaseDir, "package.json")
     expect.stringContaining(pkgFile, path.sep)
     expect(fs.existsSync(pkgFile)).toBe(true)
@@ -78,6 +78,7 @@ describe("Tests with mocked fs", () => {
         license: "MIT",
         version: "",
       },
+      sourcePkgLocation: path.join(cwd, "package.json"),
       outputDir: expect.stringContaining(`${path.sep}test-release`),
       outputPath: expect.stringContaining(`${path.sep}package.json`),
     })

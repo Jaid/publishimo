@@ -3,8 +3,6 @@ import fs from "fs"
 
 import writeJsonFile from "write-json-file"
 import {isString, isObject} from "lodash"
-import readPackageJson from "read-package-json"
-import readPkgUp from "read-pkg-up"
 import readPkg from "read-pkg"
 import makeDir from "make-dir"
 
@@ -13,26 +11,38 @@ import generatePackage from "./generatePackage"
 const getPkg = input => {
   console.log(input)
   if (isObject(input)) {
-    return input
+    return {
+      location: null,
+      pkg: input,
+    }
   }
   if (isString(input)) {
     const cwdStat = fs.statSync(input)
     if (cwdStat.isFile()) {
-      return readPackageJson(input)
+      return {
+        location: input,
+        pkg: readPkg({cwd: path.dirname(input)}),
+      }
     } else {
-      return readPkg.sync({
-        cwd: input,
-      })
+      return {
+        location: path.join(input, "package.json"),
+        pkg: readPkg.sync({cwd: input}),
+      }
     }
   }
-  if (input === false) {
-    return {}
+  const result = readPkg.sync()
+  return {
+    location: result.path,
+    pkg: result.pkg,
   }
-  return readPkgUp.sync()
 }
 
 export default options => {
-  const sourcePkg = getPkg(options.pkg)
+  options = {
+    pkg: {},
+    ...options,
+  }
+  const {pkg: sourcePkg, location: sourcePkgLocation} = getPkg(options.pkg)
   const generatedPkg = generatePackage(sourcePkg, options.config)
 
   let outputDir
@@ -58,6 +68,10 @@ export default options => {
     sourcePkg,
     generatedPkg,
     options,
+  }
+
+  if (sourcePkgLocation) {
+    stats.sourcePkgLocation = sourcePkgLocation
   }
 
   if (outputDir) {

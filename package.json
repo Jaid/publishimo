@@ -21,9 +21,7 @@
     "normalize-url": "^4.1.0",
     "obj-clean": "^2.0.0",
     "parse-author": "^2.0.0",
-    "read-package-json": "^2.0.13",
     "read-pkg": "^4.0.1",
-    "read-pkg-up": "^4.0.0",
     "sort-keys": "^2.0.0",
     "write-json-file": "^3.0.2"
   },
@@ -57,10 +55,9 @@
     "jest-plugin-fs": "^2.9.0",
     "js-yaml": "^3.12.1",
     "load-json-file": "^5.1.0",
-    "metro-memory-fs": "^0.51.1",
     "mock-fs": "^4.7.0",
     "webpack": "^4.28.4",
     "webpack-cli": "^3.2.1",
-    "webpack-config-jaid": "1.6.0"
+    "webpack-config-jaid": "1.7.0"
   }
 }
