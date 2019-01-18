@@ -43,7 +43,11 @@ export default options => {
     ...options,
   }
   const {pkg: sourcePkg, location: sourcePkgLocation} = getPkg(options.pkg)
-  const generatedPkg = generatePackage(sourcePkg, options.config)
+  const generatedPkg = generatePackage({
+    sourcePkg,
+    sourcePkgLocation,
+    config: options.config,
+  })
 
   let outputDir
   if (isString(options.output)) {

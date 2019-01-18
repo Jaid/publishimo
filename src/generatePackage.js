@@ -3,7 +3,7 @@ import sortKeys from "sort-keys"
 
 import arrayToObjectKeys from "./arrayToObjectKeys"
 
-export default (sourcePkg = {}, config = {}) => {
+export default ({sourcePkg = {}, sourcePkgLocation, config = {}}) => {
   const generatedPkg = {}
   const meta = {}
 
@@ -37,6 +37,7 @@ export default (sourcePkg = {}, config = {}) => {
     const result = processor.prepare ?.({
       config,
       sourcePkg,
+      sourcePkgLocation,
       getAny: (key = field) => config[key] || sourcePkg[key],
     })
     if (!isNil(result)) {
@@ -60,6 +61,7 @@ export default (sourcePkg = {}, config = {}) => {
         meta,
         config,
         sourcePkg,
+        sourcePkgLocation,
         myMeta: meta[field],
         getAny: (key = field) => config[key] || sourcePkg[key],
       })
