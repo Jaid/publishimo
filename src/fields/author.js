@@ -26,7 +26,8 @@ export const prepare = ({config, sourcePkg}) => {
       return author
     })
 
-  let author; let contributors
+  let author
+  let contributors
   if (authors.length) {
     const authorIndex = authors.findIndex(e => e.primary)
     if (authorIndex >= 0) {
