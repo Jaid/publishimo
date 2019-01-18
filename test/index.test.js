@@ -44,6 +44,7 @@ describe("Tests with mocked fs", () => {
           github: true,
         },
         version: "1.2.3",
+        main: "dist\\index.js"
       },
       pkg: cwd,
       output: releaseDir,
@@ -58,6 +59,7 @@ describe("Tests with mocked fs", () => {
     const expectedPkg = {
       name,
       version: "1.2.3",
+      main: "dist/index.js",
       author: {
         name: expectedAuthorName,
         url: `https://github.com/${expectedAuthorName}`,

@@ -10,6 +10,7 @@ export default ({sourcePkg = {}, sourcePkgLocation, config = {}}) => {
   const fields = [
     "name",
     "version",
+    "main",
     "description",
     "author",
     "license",
