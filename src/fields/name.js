@@ -9,7 +9,7 @@ export const apply = ({myMeta, sourcePkgLocation}) => {
     return myMeta |> cleanString
   }
   if (sourcePkgLocation) {
-    return path.dirname(sourcePkgLocation) |> cleanString
+    return sourcePkgLocation |> path.dirname |> path.basename |> cleanString
   }
   return "publishimo-output"
 }
