@@ -1,7 +1,6 @@
 import {isNil, isFunction} from "lodash"
 import sortKeys from "sort-keys"
-
-import arrayToObjectKeys from "./arrayToObjectKeys"
+import arrayToObjectKeys from "array-to-object-keys"
 
 export default ({sourcePkg = {}, sourcePkgLocation, config = {}}) => {
   const generatedPkg = {}
