@@ -1,7 +1,7 @@
-import {sortBy, sortedUniq, isNil, trim} from "lodash"
+import {sortBy, sortedUniq, trim} from "lodash"
 
 export default x => x
-  |> (_ => _.filter(!isNil(_) && _ !== ""))
+  |> (_ => _.filter(x => ["number", "boolean", "string"].includes(typeof x)))
   |> (_ => _.map(x => trim(x)))
   |> sortBy
   |> sortedUniq

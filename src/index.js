@@ -42,7 +42,7 @@ export default async options => {
     ...options,
   }
   const {pkg: sourcePkg, location: sourcePkgLocation} = getPkg(options.pkg)
-  const generatedPkg = generatePackage({
+  const generatedPkg = await generatePackage({
     sourcePkg,
     sourcePkgLocation,
     options,

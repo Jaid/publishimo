@@ -7,7 +7,9 @@ Generates a better package.json for published packages.
 ## API
 ```js
 import publishimo from "publishimo"
-const result = publishimo(options)
+publishimo(options).then(result => {
+  console.log(result)
+})
 ```
 
 ## Options

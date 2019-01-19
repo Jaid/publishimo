@@ -26,18 +26,20 @@ const getPackageDir = name => {
 
 describe("Tests with mocked fs", () => {
   afterEach(jestFs.restore)
-  it("should generate release on a basic environment", () => {
-    publishimo({
+  it("should generate release on a basic environment", async () => {
+    await publishimo({
       pkg: getPackageDir("basic"),
       output: releaseDir,
     })
   })
-  it("should generate release and output without any mistake", () => {
+  it("should generate release and output without any mistake", async () => {
     const name = "basic"
     const cwd = getPackageDir(name)
     expect.stringContaining(cwd, path.sep)
     expect.stringContaining(releaseDir, path.sep)
     const options = {
+      fetchGithub: true,
+      name: "publishimo",
       author: {
         name: "Jaid",
         github: true,
@@ -47,7 +49,7 @@ describe("Tests with mocked fs", () => {
       pkg: cwd,
       output: releaseDir,
     }
-    const result = publishimo(options)
+    const result = await publishimo(options)
     require.requireActual("fs").writeFileSync(path.resolve(__dirname, "..", "dist", "test-result.json"), JSON.stringify(result, null, 2))
     const pkgFile = path.resolve(releaseDir, "package.json")
     expect.stringContaining(pkgFile, path.sep)
@@ -65,9 +67,9 @@ describe("Tests with mocked fs", () => {
       homepage: `https://github.com/${expectedAuthorName}/${name}#readme`,
       repository: `github:${expectedAuthorName}/${name}`,
       bugs: `https://github.com/${expectedAuthorName}/${name}/issues`,
-      license: "MIT",
     }
     expect(pkg).toMatchObject(expectedPkg)
+    expect(pkg.license).toBe("MIT")
     expect(result).toMatchObject({
       options,
       generatedPkg: expectedPkg,
@@ -82,13 +84,12 @@ describe("Tests with mocked fs", () => {
       outputDir: expect.stringContaining(`${path.sep}test-release`),
       outputPath: expect.stringContaining(`${path.sep}package.json`),
     })
-    console.log(result)
   })
-  it("should generate release without any configuration", () => {
-    publishimo({
+  it("should generate release without any configuration", async () => {
+    await publishimo({
       output: releaseDir,
     })
-    const pkg = loadJsonFile.sync(path.join(releaseDir, "package.json"))
+    const pkg = await loadJsonFile(path.join(releaseDir, "package.json"))
     expect(Object.keys(pkg).length).toBe(2)
     expect(pkg).toMatchObject({
       name: "publishimo-output",

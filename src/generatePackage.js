@@ -2,9 +2,10 @@ import {isNil, isFunction} from "lodash"
 import sortKeys from "sort-keys"
 import arrayToObjectKeys from "array-to-object-keys"
 
-export default ({sourcePkg = {}, sourcePkgLocation, options}) => {
+import resolveAny from "./resolveAny"
+
+export default async ({sourcePkg = {}, sourcePkgLocation, options}) => {
   const generatedPkg = {}
-  const meta = {}
 
   const fields = [
     "name",
@@ -33,17 +34,14 @@ export default ({sourcePkg = {}, sourcePkgLocation, options}) => {
    * Runs "prepare" first on every processor, so all processors can use each others meta data without being dependent on execution order
    * The existence of a "prepare" function is optional, hence the weird looking optional chaining syntax
    */
-  for (const [field, processor] of Object.entries(processors)) {
-    const result = processor.prepare ?.({
-      options,
-      sourcePkg,
-      sourcePkgLocation,
-      getAny: (key = field) => options[key] || sourcePkg[key],
-    })
-    if (!isNil(result)) {
-      meta[field] = result
-    }
-  }
+  const metaGeneratorJobs = Object.entries(processors).map(([field, processor]) => resolveAny(processor.prepare, {
+    options,
+    sourcePkg,
+    sourcePkgLocation,
+    getAny: (key = field) => options[key] || sourcePkg[key],
+  }))
+  const results = await Promise.all(metaGeneratorJobs)
+  const meta = arrayToObjectKeys(Object.keys(processors), (key, index) => results[index])
 
   for (const [field, processor] of Object.entries(processors)) {
     let result
@@ -59,10 +57,10 @@ export default ({sourcePkg = {}, sourcePkgLocation, options}) => {
     } else {
       result = processor.apply({
         meta,
+        myMeta: meta[field],
         options,
         sourcePkg,
         sourcePkgLocation,
-        myMeta: meta[field],
         getAny: (key = field) => options[key] || sourcePkg[key],
       })
     }
@@ -70,6 +68,6 @@ export default ({sourcePkg = {}, sourcePkgLocation, options}) => {
       generatedPkg[field] = result
     }
   }
-
+  debugger
   return generatedPkg |> sortKeys
 }
