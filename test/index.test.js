@@ -38,14 +38,12 @@ describe("Tests with mocked fs", () => {
     expect.stringContaining(cwd, path.sep)
     expect.stringContaining(releaseDir, path.sep)
     const options = {
-      config: {
-        author: {
-          name: "Jaid",
-          github: true,
-        },
-        version: "1.2.3",
-        main: "dist\\index.js"
+      author: {
+        name: "Jaid",
+        github: true,
       },
+      version: "1.2.3",
+      main: "dist\\index.js",
       pkg: cwd,
       output: releaseDir,
     }

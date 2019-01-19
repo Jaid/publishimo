@@ -2,7 +2,7 @@ import {isNil, isFunction} from "lodash"
 import sortKeys from "sort-keys"
 import arrayToObjectKeys from "array-to-object-keys"
 
-export default ({sourcePkg = {}, sourcePkgLocation, config = {}}) => {
+export default ({sourcePkg = {}, sourcePkgLocation, options}) => {
   const generatedPkg = {}
   const meta = {}
 
@@ -35,10 +35,10 @@ export default ({sourcePkg = {}, sourcePkgLocation, config = {}}) => {
    */
   for (const [field, processor] of Object.entries(processors)) {
     const result = processor.prepare ?.({
-      config,
+      options,
       sourcePkg,
       sourcePkgLocation,
-      getAny: (key = field) => config[key] || sourcePkg[key],
+      getAny: (key = field) => options[key] || sourcePkg[key],
     })
     if (!isNil(result)) {
       meta[field] = result
@@ -59,11 +59,11 @@ export default ({sourcePkg = {}, sourcePkgLocation, config = {}}) => {
     } else {
       result = processor.apply({
         meta,
-        config,
+        options,
         sourcePkg,
         sourcePkgLocation,
         myMeta: meta[field],
-        getAny: (key = field) => config[key] || sourcePkg[key],
+        getAny: (key = field) => options[key] || sourcePkg[key],
       })
     }
     if (!isNil(result)) {

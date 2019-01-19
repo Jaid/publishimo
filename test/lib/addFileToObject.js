@@ -1,4 +1,5 @@
 import path from "path"
+
 const fs = require.requireActual("fs")
 
 const addFileToObject = (file, object = {}) => {

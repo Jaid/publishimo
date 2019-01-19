@@ -7,6 +7,6 @@ export const apply = ({myMeta, meta}) => {
   }
   const repoInfo = meta.repository ?.repoInfo
   if (repoInfo) {
-    return repoInfo.browse() |> cleanUrl
+    return `${repoInfo.browse()}#readme` |> cleanUrl
   }
 }

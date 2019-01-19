@@ -9,7 +9,6 @@ import makeDir from "make-dir"
 import generatePackage from "./generatePackage"
 
 const getPkg = input => {
-  console.log(input)
   if (isObject(input)) {
     return {
       location: null,
@@ -46,7 +45,7 @@ export default options => {
   const generatedPkg = generatePackage({
     sourcePkg,
     sourcePkgLocation,
-    config: options.config,
+    options,
   })
 
   let outputDir

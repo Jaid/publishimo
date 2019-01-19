@@ -3,8 +3,8 @@ import cleanAuthor from "lib/cleanAuthor"
 import getGithubProfile from "lib/getGithubProfile"
 import {isString} from "lodash"
 
-export const prepare = ({config, sourcePkg}) => {
-  const authors = collectObjects([config.author, sourcePkg.author, config.authors, sourcePkg.authors, config.maintainer, sourcePkg.maintainer, config.maintainers, sourcePkg.maintainers, config.contributors, sourcePkg.contributors])
+export const prepare = ({options, sourcePkg}) => {
+  const authors = collectObjects([options.author, sourcePkg.author, options.authors, sourcePkg.authors, options.maintainer, sourcePkg.maintainer, options.maintainers, sourcePkg.maintainers, options.contributors, sourcePkg.contributors])
     .map(rawAuthor => {
       let author
       if (rawAuthor |> isString) {
@@ -36,7 +36,6 @@ export const prepare = ({config, sourcePkg}) => {
     } else {
       author = authors.shift()
     }
-
     if (authors.length) {
       contributors = authors
     }
