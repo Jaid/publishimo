@@ -62,7 +62,7 @@ describe("Tests with mocked fs", () => {
         name: expectedAuthorName,
         url: `https://github.com/${expectedAuthorName}`,
       },
-      homepage: `https://github.com/${expectedAuthorName}/${name}`,
+      homepage: `https://github.com/${expectedAuthorName}/${name}#readme`,
       repository: `github:${expectedAuthorName}/${name}`,
       bugs: `https://github.com/${expectedAuthorName}/${name}/issues`,
       license: "MIT",
