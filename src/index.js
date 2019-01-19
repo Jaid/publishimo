@@ -36,7 +36,7 @@ const getPkg = input => {
   }
 }
 
-export default options => {
+export default async options => {
   options = {
     pkg: {},
     ...options,
