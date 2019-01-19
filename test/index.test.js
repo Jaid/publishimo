@@ -57,16 +57,16 @@ describe("Tests with mocked fs", () => {
     const pkg = loadJsonFile.sync(pkgFile)
     const expectedAuthorName = "Jaid"
     const expectedPkg = {
-      name,
+      name: "publishimo",
       version: "1.2.3",
       main: "dist/index.js",
       author: {
         name: expectedAuthorName,
         url: `https://github.com/${expectedAuthorName}`,
       },
-      homepage: `https://github.com/${expectedAuthorName}/${name}#readme`,
-      repository: `github:${expectedAuthorName}/${name}`,
-      bugs: `https://github.com/${expectedAuthorName}/${name}/issues`,
+      homepage: `https://github.com/${expectedAuthorName}/publishimo#readme`,
+      repository: `github:${expectedAuthorName}/publishimo`,
+      bugs: `https://github.com/${expectedAuthorName}/publishimo/issues`,
     }
     expect(pkg).toMatchObject(expectedPkg)
     expect(pkg.license).toBe("MIT")
@@ -75,10 +75,10 @@ describe("Tests with mocked fs", () => {
       generatedPkg: expectedPkg,
       sourcePkg:
       {
-        name,
-        publishimo: "config/publishimo.js",
-        license: "MIT",
-        version: "",
+        name: "publishimo",
+        devDependencies: {
+          "js-yaml": expect.stringContaining("."),
+        },
       },
       sourcePkgLocation: path.join(cwd, "package.json"),
       outputDir: expect.stringContaining(`${path.sep}test-release`),

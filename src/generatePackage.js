@@ -68,6 +68,5 @@ export default async ({sourcePkg = {}, sourcePkgLocation, options}) => {
       generatedPkg[field] = result
     }
   }
-  debugger
   return generatedPkg |> sortKeys
 }
