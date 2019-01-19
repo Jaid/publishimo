@@ -28,10 +28,9 @@ export const prepare = async ({getAny, options}) => {
     value,
   }
   if (options.fetchGithub) {
-    result.github = await fetchRepo(repoInfo.user, "publishimo")
-    // result.github = await fetchRepo(repoInfo.user, repoInfo.project)
+    result.github = await fetchRepo(repoInfo.user, repoInfo.project)
   }
   return result
 }
 
-export const applyMeta = x => x.repoInfo.shortcut() || x.value
+export const applyMeta = x => x.repoInfo ?.shortcut() || x.value

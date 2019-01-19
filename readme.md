@@ -29,14 +29,14 @@ const publishimoConfig = {
   name: "name", // Default: Name of project root folder
   version: "1.2.3", // Default: 1.0.0
   main: "index.js", // No default, but publishimo-webpack-plugin has one
+  license: "MIT", // Default comes from GitHub if fetchGithub is true
   description: "", // Default comes from GitHub if fetchGithub is true
-  keywords: ["tag"] // Default comes from GitHub if fetchGithub is true
+  keywords: ["tag"] // Default comes from GitHub if fetchGithub is true (repository topics)
   author: {
     name: "Smitty Werben Jagger Man Jaidsen",
     email: "jaid@example.com",
     github: "Jaid" // Shortcut for author.homepage
   },
-  license: "MIT", // No default, set this by yourself please!
   os: ["!darwin"],
   cpu : ["x64", "ia32"],
   engines: {

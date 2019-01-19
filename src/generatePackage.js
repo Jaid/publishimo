@@ -5,8 +5,6 @@ import arrayToObjectKeys from "array-to-object-keys"
 import resolveAny from "./resolveAny"
 
 export default async ({sourcePkg = {}, sourcePkgLocation, options}) => {
-  const generatedPkg = {}
-
   const fields = [
     "name",
     "version",
@@ -43,19 +41,18 @@ export default async ({sourcePkg = {}, sourcePkgLocation, options}) => {
   const results = await Promise.all(metaGeneratorJobs)
   const meta = arrayToObjectKeys(Object.keys(processors), (key, index) => results[index])
 
-  for (const [field, processor] of Object.entries(processors)) {
-    let result
+  const pkgGeneratorJobs = Object.entries(processors).map(([field, processor]) => async () => {
     if (processor.applyMeta) {
       const metaValue = meta[field]
       if (!isNil(metaValue)) {
         if (isFunction(processor.applyMeta)) {
-          result = metaValue |> processor.applyMeta
+          return processor.applyMeta(metaValue)
         } else {
-          result = metaValue
+          return metaValue
         }
       }
-    } else {
-      result = processor.apply({
+    } else if (processor.apply) {
+      return resolveAny(processor.apply, {
         meta,
         myMeta: meta[field],
         options,
@@ -64,9 +61,11 @@ export default async ({sourcePkg = {}, sourcePkgLocation, options}) => {
         getAny: (key = field) => options[key] || sourcePkg[key],
       })
     }
-    if (!isNil(result)) {
-      generatedPkg[field] = result
-    }
-  }
+  })
+
+  const pkgResults = await Promise.all(pkgGeneratorJobs.map(job => job()))
+
+  const generatedPkg = arrayToObjectKeys(Object.keys(processors), (key, index) => pkgResults[index])
+
   return generatedPkg |> sortKeys
 }
