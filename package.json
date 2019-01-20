@@ -1,6 +1,6 @@
 {
   "name": "publishimo",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "license": "MIT",
   "author": {
     "name": "Jaid",
@@ -59,6 +59,7 @@
     "jsdoc": "^3.5.5",
     "load-json-file": "^5.1.0",
     "mock-fs": "^4.7.0",
+    "publishimo-cli": "^2.2.1",
     "webpack": "^4.28.4",
     "webpack-cli": "^3.2.1",
     "webpack-config-jaid": "1.11.0"
