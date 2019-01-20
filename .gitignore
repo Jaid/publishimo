@@ -9,16 +9,18 @@
 /yarn-error.log
 
 # npm
+#/package-lock.json
 /npm-debug.log
 /npm-debug.log.*
 
 # pnpm
 /shrinkwrap.yaml
+/pnpm-debug.log
 
 # Generated or temporary content
 /build/
 /dist/
 
 # IDEs
-# /.vscode/ # I'm using this!
+/.vscode/
 /.idea/
