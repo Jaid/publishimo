@@ -28,7 +28,7 @@ export const prepare = async ({getAny, options, sourcePkgLocation}) => {
     value,
   }
   if (options.fetchGithub) {
-    result.github = await fetchRepo(repoInfo.user, repoInfo.project)
+    result.github = await fetchRepo(repoInfo.user, repoInfo.project, options.cache)
   }
   return result
 }

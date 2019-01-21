@@ -39,6 +39,7 @@ const getPkg = input => {
 export default async options => {
   options = {
     pkg: {},
+    cache: true,
     ...options,
   }
   const {pkg: sourcePkg, location: sourcePkgLocation} = getPkg(options.pkg)
