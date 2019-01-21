@@ -16,11 +16,17 @@ export const prepare = async ({getAny, options, sourcePkgLocation}) => {
     repoInfo = gitInfo.fromUrl(value.url)
   } else {
     const author = getAny("author")
-    if (author && author.name && author.github) {
-      const authorGithub = getGithubProfile(author.name, author.github)
-      const projectName = getAny("name") || (sourcePkgLocation && sourcePkgLocation |> path.dirname |> path.basename |> cleanString)
-      if (authorGithub && projectName) {
-        value = `${authorGithub |> normalizeUrl}/${projectName |> cleanString}`
+    const projectName = getAny("name") || (sourcePkgLocation && sourcePkgLocation |> path.dirname |> path.basename |> cleanString)
+    if (author && projectName) {
+      if (author.name && author.github) {
+        const authorGithub = getGithubProfile(author.name, author.github)
+        if (authorGithub && projectName) {
+          value = `${authorGithub |> normalizeUrl}/${projectName |> cleanString}`
+          repoInfo = gitInfo.fromUrl(value)
+        }
+      }
+      if (author?.url?.includes("github.com/")) {
+        value = `${author.url |> normalizeUrl}/${projectName |> cleanString}`
         repoInfo = gitInfo.fromUrl(value)
       }
     }

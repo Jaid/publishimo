@@ -22,7 +22,7 @@ export default async (owner, repo, cache = true) => {
       accept: "application/vnd.github.mercy-preview+json",
     },
   })
-  const info = pick(body, ["topics", "description", "license"])
+  const info = pick(body, ["topics", "description", "license", "homepage"])
   if (cache) {
     await makeDir(cacheDir)
     fs.writeJsonSync(cacheFile, info)
