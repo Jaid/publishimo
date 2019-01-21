@@ -5,18 +5,18 @@ import getGithubProfile from "lib/getGithubProfile"
 
 import fetchRepo from "../fetchRepo"
 
-export const prepare = async ({getAny, options}) => {
+export const prepare = async ({getAny, options, sourcePkgLocation}) => {
   let repoInfo
   let value = getAny()
   if (typeof value === "string") {
     repoInfo = gitInfo.fromUrl(value)
-  } else if (value ?.url) {
+  } else if (value?.url) {
     repoInfo = gitInfo.fromUrl(value.url)
   } else {
     const author = getAny("author")
     if (author && author.name && author.github) {
       const authorGithub = getGithubProfile(author.name, author.github)
-      const projectName = getAny("name")
+      const projectName = getAny("name") || (sourcePkgLocation && sourcePkgLocation |> path.dirname |> path.basename |> cleanString)
       if (authorGithub && projectName) {
         value = `${authorGithub |> normalizeUrl}/${projectName |> cleanString}`
         repoInfo = gitInfo.fromUrl(value)
