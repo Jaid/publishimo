@@ -43,7 +43,7 @@ describe("Tests with mocked fs", () => {
       name: "publishimo",
       author: {
         name: "Jaid",
-        github: true,
+        url: "github.com/Jaid",
       },
       version: "1.2.3",
       main: "dist\\index.js",

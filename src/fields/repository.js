@@ -8,6 +8,12 @@ import {isString} from "lodash"
 
 import fetchRepo from "../fetchRepo"
 
+const normalizeAuthorGithub = url => normalizeUrl(url, {
+  defaultProtocol: "https:",
+  stripHash: true,
+  forceHttp: true,
+})
+
 export const prepare = async ({getAny, options, sourcePkgLocation}) => {
   let repoInfo
   let value = getAny()
@@ -25,12 +31,13 @@ export const prepare = async ({getAny, options, sourcePkgLocation}) => {
       if (author.name && author.github) {
         const authorGithub = getGithubProfile(author.name, author.github)
         if (authorGithub && projectName) {
-          value = `${authorGithub |> normalizeUrl}/${projectName |> cleanString}`
+          value = `${authorGithub |> normalizeAuthorGithub}/${projectName |> cleanString}`
           repoInfo = gitInfo.fromUrl(value)
         }
       }
       if (author?.url?.includes("github.com/")) {
-        value = `${author.url |> normalizeUrl}/${projectName |> cleanString}`
+        console.log(author.url)
+        value = `${author.url |> normalizeAuthorGithub}/${projectName |> cleanString}`
         repoInfo = gitInfo.fromUrl(value)
       }
     }
@@ -45,4 +52,4 @@ export const prepare = async ({getAny, options, sourcePkgLocation}) => {
   return result
 }
 
-export const applyMeta = x => x.repoInfo ?.shortcut() || x.value
+export const applyMeta = x => x.repoInfo?.shortcut() || x.value
