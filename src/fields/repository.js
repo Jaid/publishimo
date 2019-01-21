@@ -1,3 +1,5 @@
+import path from "path"
+
 import normalizeUrl from "normalize-url"
 import gitInfo from "hosted-git-info"
 import cleanString from "lib/cleanString"
@@ -27,7 +29,7 @@ export const prepare = async ({getAny, options, sourcePkgLocation}) => {
     repoInfo,
     value,
   }
-  if (options.fetchGithub) {
+  if (options.fetchGithub && repoInfo) {
     result.github = await fetchRepo(repoInfo.user, repoInfo.project, options.cache)
   }
   return result
