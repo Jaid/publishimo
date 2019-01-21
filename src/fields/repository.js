@@ -4,6 +4,7 @@ import normalizeUrl from "normalize-url"
 import gitInfo from "hosted-git-info"
 import cleanString from "lib/cleanString"
 import getGithubProfile from "lib/getGithubProfile"
+import {isString} from "lodash"
 
 import fetchRepo from "../fetchRepo"
 
@@ -16,7 +17,10 @@ export const prepare = async ({getAny, options, sourcePkgLocation}) => {
     repoInfo = gitInfo.fromUrl(value.url)
   } else {
     const author = getAny("author")
-    const projectName = getAny("name") || (sourcePkgLocation && sourcePkgLocation |> path.dirname |> path.basename |> cleanString)
+    let projectName = getAny("name")
+    if (!projectName && isString(sourcePkgLocation)) {
+      projectName = sourcePkgLocation |> path.dirname |> path.basename |> cleanString
+    }
     if (author && projectName) {
       if (author.name && author.github) {
         const authorGithub = getGithubProfile(author.name, author.github)
