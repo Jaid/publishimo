@@ -21,6 +21,9 @@ const fetchRepo = async (owner, repo, cache = true) => {
       }
     }
   }
+  if (!isString(process.env?.GITHUB_TOKEN)) {
+    throw new Error(`process.env.GITHUB_TOKEN is not set, I can't fetch info of GitHub repository ${owner}/${repo}!`)
+  }
   const {body, rateLimit} = await ghGot(`repos/${owner}/${repo}`, {
     headers: {
       accept: "application/vnd.github.mercy-preview+json",
