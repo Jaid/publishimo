@@ -1,17 +1,47 @@
 import path from "path"
 
+import fs from "fs-extra"
 import normalizeUrl from "normalize-url"
 import gitInfo from "hosted-git-info"
 import cleanString from "lib/cleanString"
 import getGithubProfile from "lib/getGithubProfile"
-import {isString} from "lodash"
+import {isString, pick} from "lodash"
+import appCacheDir from "app-cache-dir"
+import ghGot from "gh-got"
+import makeDir from "make-dir"
 
-import fetchRepo from "../fetchRepo"
+const fetchRepo = async (owner, repo, cache = true) => {
+  const cacheDir = path.join(appCacheDir("publishimo"), "github", owner, repo)
+  const cacheFile = path.join(cacheDir, "info.json")
+  if (cache) {
+    if (fs.existsSync(cacheFile)) {
+      return {
+        cacheFile,
+        ...fs.readJsonSync(cacheFile),
+      }
+    }
+  }
+  const {body, rateLimit} = await ghGot(`repos/${owner}/${repo}`, {
+    headers: {
+      accept: "application/vnd.github.mercy-preview+json",
+    },
+  })
+  const info = pick(body, ["topics", "description", "license", "homepage"])
+  if (cache) {
+    await makeDir(cacheDir)
+    fs.writeJsonSync(cacheFile, info)
+    info.cacheFile = cacheFile
+  }
+  return {
+    rateLimit,
+    ...info,
+  }
+}
 
 const normalizeAuthorGithub = url => normalizeUrl(url, {
   defaultProtocol: "https:",
   stripHash: true,
-  forceHttp: true,
+  forceHttps: true,
 })
 
 export const prepare = async ({getAny, options, sourcePkgLocation}) => {
