@@ -30,6 +30,9 @@
   "eslintConfig": {
     "extends": "jaid"
   },
+  "jest": {
+    "testEnvironment": "node"
+  },
   "dependencies": {
     "app-cache-dir": "^0.4.0",
     "array-to-object-keys": "^1.0.1",
