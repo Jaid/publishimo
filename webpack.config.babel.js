@@ -11,6 +11,10 @@ export default webpackConfigJaid({
       fetchGithub: true,
     },
   },
+  includes: [
+    "readme.md",
+    "license.txt",
+  ],
   packageRoot: __dirname,
   extra: {
     resolve: {
