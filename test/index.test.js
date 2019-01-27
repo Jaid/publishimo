@@ -3,6 +3,7 @@ import os from "os"
 
 import jestFs, {mock as fs} from "jest-plugin-fs"
 import loadJsonFile from "load-json-file"
+import appCacheDir from "app-cache-dir"
 
 import publishimo from "../dist"
 
@@ -42,7 +43,7 @@ describe("Tests with mocked fs", () => {
       name: "publishimo",
       author: {
         name: "Jaid",
-        github: true,
+        url: "github.com/Jaid",
       },
       version: "1.2.3",
       main: "dist\\index.js",
@@ -64,7 +65,7 @@ describe("Tests with mocked fs", () => {
         name: expectedAuthorName,
         url: `https://github.com/${expectedAuthorName}`,
       },
-      homepage: `https://github.com/${expectedAuthorName}/publishimo#readme`,
+      homepage: `https://github.com/${expectedAuthorName}/publishimo`,
       repository: `github:${expectedAuthorName}/publishimo`,
       bugs: `https://github.com/${expectedAuthorName}/publishimo/issues`,
     }
@@ -83,6 +84,18 @@ describe("Tests with mocked fs", () => {
       sourcePkgLocation: path.join(cwd, "package.json"),
       outputDir: expect.stringContaining(`${path.sep}test-release`),
       outputPath: expect.stringContaining(`${path.sep}package.json`),
+    })
+    const cacheDir = path.join(appCacheDir("publishimo"), "github", "Jaid", "publishimo")
+    const cacheFile = path.join(cacheDir, "info.json")
+    expect(fs.existsSync(cacheDir)).toBeTruthy()
+    expect(fs.existsSync(cacheFile)).toBeTruthy()
+    const cache = await loadJsonFile(cacheFile)
+    expect(cache).toMatchObject({
+      license: {
+        spdx_id: result.generatedPkg.license,
+      },
+      description: result.generatedPkg.description,
+      topics: expect.arrayContaining(result.generatedPkg.keywords),
     })
   })
   it("should generate release without any configuration", async () => {

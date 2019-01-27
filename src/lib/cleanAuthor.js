@@ -8,7 +8,9 @@ export default x => {
     |> objClean
     |> (_ => mapValues(_, trim))
   if (x.url) {
-    x.url = x.url |> normalizeUrl
+    x.url = normalizeUrl(x.url, {
+      defaultProtocol: "https:",
+    })
   }
   return x
 }

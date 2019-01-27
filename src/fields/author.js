@@ -13,7 +13,7 @@ export const prepare = ({options, sourcePkg}) => {
         author = {
           name: rawAuthor.name,
           email: rawAuthor.email,
-          url: rawAuthor.url || rawAuthor.website,
+          url: rawAuthor.url || rawAuthor.homepage || rawAuthor.website,
           primary: rawAuthor.primary,
         }
       }

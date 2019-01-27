@@ -5,7 +5,7 @@ export const apply = ({meta, myMeta}) => {
   if (myMeta) {
     return myMeta |> cleanStringArray
   }
-  if (meta ?.repository ?.github ?.topics) {
+  if (meta?.repository?.github?.topics) {
     return meta.repository.github.topics |> cleanStringArray
   }
 }

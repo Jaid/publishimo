@@ -1,6 +1,6 @@
 {
   "name": "publishimo",
-  "version": "3.2.0",
+  "version": "3.5.2",
   "license": "MIT",
   "author": {
     "name": "Jaid",
@@ -29,8 +29,13 @@
   "eslintConfig": {
     "extends": "jaid"
   },
+  "jest": {
+    "testEnvironment": "node"
+  },
   "dependencies": {
-    "array-to-object-keys": "1.0.7",
+    "app-cache-dir": "^0.4.0",
+    "array-to-object-keys": "^1.0.7",
+    "fs-extra": "^7.0.1",
     "gh-got": "^8.1.0",
     "hosted-git-info": "^2.7.1",
     "lodash": "^4.17.11",
