@@ -11,7 +11,7 @@ export default webpackConfigJaid({
       fetchGithub: true,
     },
   },
-  includes: [
+  include: [
     "readme.md",
     "license.txt",
   ],
