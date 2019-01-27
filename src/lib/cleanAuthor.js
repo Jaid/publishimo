@@ -4,9 +4,9 @@ import normalizeUrl from "normalize-url"
 
 export default x => {
   x = x
-    |> (_ => pick(_, ["name", "email", "url"]))
+    |> pick(#, ["name", "email", "url"])
     |> objClean
-    |> (_ => mapValues(_, trim))
+    |> mapValues(#, trim)
   if (x.url) {
     x.url = normalizeUrl(x.url, {
       defaultProtocol: "https:",

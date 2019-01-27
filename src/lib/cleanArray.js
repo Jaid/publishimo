@@ -1,6 +1,6 @@
-import {sortBy, sortedUniq, isNil} from "lodash"
+import {sortBy, sortedUniq, compact} from "lodash"
 
 export default x => x
-  |> (_ => _.filter(!isNil(_)))
+  |> compact
   |> sortBy
   |> sortedUniq
