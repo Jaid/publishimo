@@ -1,3 +1,5 @@
+/** @module publishimo */
+
 import path from "path"
 import fs from "fs"
 
@@ -36,6 +38,12 @@ const getPkg = input => {
   }
 }
 
+/**
+ * Generates a new pkg object
+ * @async
+ * @param {object} options
+ * @returns {Promise<object>} publishimoResult
+ */
 export default async options => {
   options = {
     pkg: {},
