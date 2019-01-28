@@ -9,6 +9,7 @@ export default async ({sourcePkg = {}, sourcePkgLocation, options}) => {
     "name",
     "version",
     "main",
+    "types",
     "bin",
     "description",
     "author",
