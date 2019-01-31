@@ -1,5 +1,6 @@
 {
   "version": "3.6.0",
+  "private": true,
   "author": "Jaid <jaid.jsx@gmail.com> (https://github.com/Jaid)",
   "babel": {
     "presets": [
@@ -45,7 +46,7 @@
     "publishimo-cli": "^2.4.0",
     "webpack": "^4.29.0",
     "webpack-cli": "^3.2.1",
-    "webpack-config-jaid": "1.22.0"
+    "webpack-config-jaid": "1.22.1"
   },
   "scripts": {
     "build:prod": "cross-env NODE_ENV=production webpack",
