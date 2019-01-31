@@ -10,11 +10,7 @@ export default webpackConfigJaid({
       fetchGithub: true,
     },
   },
-  documentation: {
-    babel: {
-      presets: ["jaid"],
-    },
-  },
+  documentation: true,
   extra: {
     resolve: {
       alias: {
