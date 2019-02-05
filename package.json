@@ -25,7 +25,7 @@
     "normalize-url": "^4.1.0",
     "obj-clean": "^2.0.0",
     "parse-author": "^2.0.0",
-    "read-pkg": "^4.0.1",
+    "resolve-pkg-option": "^1.0.1",
     "sort-keys": "^2.0.0",
     "write-json-file": "^3.0.2"
   },
@@ -54,6 +54,6 @@
     "test": "npm run build:prod && jest",
     "test:dev": "npm run build:dev && jest",
     "test:debug": "npm run build:dev && cross-env node --inspect node_modules/jest/bin/jest.js --runInBand",
-    "release": "npm run build:prod && npm publish dist && cross-env git tag v$npm_package_version && git push --tags && cross-env opn https://github.com/$npm_package_author_name/$(basename $PWD)/releases/new?tag=v$npm_package_version"
+    "release": "npm test && npm publish dist && cross-env git tag v$npm_package_version && git push --tags && cross-env opn https://github.com/$npm_package_author_name/$(basename $PWD)/releases/new?tag=v$npm_package_version"
   }
 }

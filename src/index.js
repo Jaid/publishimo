@@ -4,39 +4,11 @@ import path from "path"
 import fs from "fs"
 
 import writeJsonFile from "write-json-file"
-import {isString, isObject} from "lodash"
-import readPkg from "read-pkg"
+import {isString} from "lodash"
 import makeDir from "make-dir"
+import resolvePkgOption from "resolve-pkg-option"
 
 import generatePackage from "./generatePackage"
-
-const getPkg = input => {
-  if (isObject(input)) {
-    return {
-      location: null,
-      pkg: input,
-    }
-  }
-  if (isString(input)) {
-    const cwdStat = fs.statSync(input)
-    if (cwdStat.isFile()) {
-      return {
-        location: input,
-        pkg: readPkg({cwd: path.dirname(input)}),
-      }
-    } else {
-      return {
-        location: path.join(input, "package.json"),
-        pkg: readPkg.sync({cwd: input}),
-      }
-    }
-  }
-  const result = readPkg.sync()
-  return {
-    location: result.path,
-    pkg: result.pkg,
-  }
-}
 
 /**
  * Generates a new pkg object
@@ -52,7 +24,7 @@ export default async options => {
     fetchGithub: false,
     ...options,
   }
-  const {pkg: sourcePkg, location: sourcePkgLocation} = getPkg(options.pkg)
+  const {pkg: sourcePkg, path: sourcePkgLocation} = await resolvePkgOption(options.pkg)
   const generatedPkg = await generatePackage({
     sourcePkg,
     sourcePkgLocation,
