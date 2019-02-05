@@ -1,6 +1,34 @@
 language: node_js
 node_js: [node, lts/*]
-os: [linux, osx] # Excluded Windows (currently doesn't work with the env variable below)
-env:
-  global:
-    secure: USrUNEuvo9oVRbhzECVRWmKajMW84gIsZMh8QcM/NkchVTL4M0uNqa+g7evPlN4kpcRu+t5z1+Ef5nARH3ewoSsK3cA+jw1llqXLZiVcfDupWcX0x49PwQf5Sj8zFvVJuJLHJp6Ge8nWmhyi3R9cHLjRDf9yWErB636FRdzfmHKCGVbAz9ouRdRteuZ/W/tgGeobnuPkL8z4tqF5CMZmsiRPYpRGckEWCC4TSoIzpkj0xqIqzEDnOw8uxyvimavI2KLZP9Da2zf3mOiubSG+P4V7cFoGspJhfmjpiVXmMCNHf0rvZ2VL21OTynxF51KegJZL8yeUWHrx3cNaofMdQOMKjfNmOnmFJt4d/gdUQI3PXKjywbCxSV7cMqBpVArRdK+ikQVXtDyjxnb20dSR4bYLonvVNL6lJlwLnJdZ1n4M640eNNUm+xvsxmd/SSxLG8Yej4HtGUDVk2uq3lHFmX4xRSm3FCB2KzOy5/t7DLKyqXduGcVd0xavz6Mr3Vf56O/e8IdagGoDyYy4dnY03hP4CIRKmWGPtmp56UQewR7OPvlV+NjHW9GbYwiCCzZPOotaQBZhktRgth5DKJxyCWzJHfj4DzseFfAvnOfZ1DSjb7GydgrsXQU/DfvFvNRh46k1VVG+QTTiX6d+T1XKt4cAxKt/7qYrxNhFtAOyGvA=
+os: [linux, osx] # Windows doesn't work currently, I should try again in May 2019 (If I didn't, remind me please!)
+cache:
+  npm: true
+jobs:
+  include:
+    - stage: Deploy
+      before_deploy:
+        - npm run build:prod
+        - export MY_PACKAGE_NAME=$(node -e "console.log(require('./dist/package').name)")
+        - export MY_PACKAGE_VERSION=$(node -e "console.log(require('./dist/package').version)")
+        - export ZIP_NAME=$MY_PACKAGE_NAME_v$MY_PACKAGE_VERSION.zip
+        - export MIN_ZIP_NAME=$MY_PACKAGE_NAME_v$MY_PACKAGE_VERSION_min.zip
+        - cd dist
+        - zip -9 --recurse-paths ../$ZIP_NAME **
+        - zip -9 --recurse-paths ../$MIN_ZIP_NAME ** --exclude \*.d.ts --exclude readme.*
+        - cd ..
+      deploy:
+        - provider: pages
+          local_dir: dist-jsdoc/$MY_PACKAGE_NAME/$MY_PACKAGE_VERSION
+          fqdn: $MY_PACKAGE_NAME.jaid.codes
+          skip_cleanup: true
+          github_token: $GITHUB_TOKEN # Permissions: public_repo, repo:status, repo_deployment
+        - provider: releases
+          file:
+            - dist/package.json
+            - dist/license.txt
+            - dist/index.d.ts
+            - $ZIP_NAME
+            - $MIN_ZIP_NAME
+          skip_cleanup: true
+          api_key: $GITHUB_TOKEN # Permissions: public_repo, repo:status, repo_deployment
+          on: { tags: true }
