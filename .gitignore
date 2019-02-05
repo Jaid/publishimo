@@ -9,16 +9,15 @@
 /yarn-error.log
 
 # npm
-#/package-lock.json
+/.npmrc
 /npm-debug.log
 /npm-debug.log.*
 
 # pnpm
-/shrinkwrap.yaml
 /pnpm-debug.log
+/shrinkwrap.yaml
 
 # Generated or temporary content
-/build/
 /dist/
 /dist-jsdoc/
 
