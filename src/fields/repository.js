@@ -9,6 +9,7 @@ import {isString, pick} from "lodash"
 import appCacheDir from "app-cache-dir"
 import ghGot from "gh-got"
 import makeDir from "make-dir"
+import json5 from "json5"
 
 const fetchRepo = async (owner, repo, cache = true) => {
   const cacheDir = path.join(appCacheDir("publishimo"), "github", owner, repo)
