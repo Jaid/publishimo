@@ -1,5 +1,5 @@
 {
-  "version": "3.6.0",
+  "version": "4.0.0",
   "private": true,
   "author": "Jaid <jaid.jsx@gmail.com> (https://github.com/Jaid)",
   "babel": {
@@ -54,6 +54,6 @@
     "test": "npm run build:prod && jest",
     "test:dev": "npm run build:dev && jest",
     "test:debug": "npm run build:dev && cross-env node --inspect node_modules/jest/bin/jest.js --runInBand",
-    "release": "npm test && npm publish dist && cross-env git tag v$npm_package_version && git push --tags && cross-env opn https://github.com/$npm_package_author_name/$(basename $PWD)/releases/new?tag=v$npm_package_version"
+    "release": "npm test && cross-env git tag v$npm_package_version && git push --tags && cross-env opn https://github.com/$npm_package_author_name/$(basename $PWD)/releases/new?tag=v$npm_package_version"
   }
 }
