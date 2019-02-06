@@ -27,9 +27,11 @@ const fetchRepo = async (owner, repo, cache = true, token = process.env.GITHUB_T
   }
   const apiPath = `repos/${owner}/${repo}`
   if (!token) {
-    throw new Error(`options.publishimo = "token" and process.env.GITHUB_TOKEN are not set, I can't fetch info of ${apiPath}`)
+    throw new Error(`options.fetchGithub="token" and process.env.GITHUB_TOKEN are not set, I can't fetch info of ${apiPath}`)
   }
   const {body, rateLimit} = await ghGot(apiPath, {
+    token,
+    json: true,
     headers: {
       accept: "application/vnd.github.mercy-preview+json",
     },
@@ -91,7 +93,7 @@ export const prepare = async ({getAny, options, sourcePkgLocation}) => {
     value,
   }
   if (options.fetchGithub && repoInfo) {
-    result.github = await fetchRepo(repoInfo.user, repoInfo.project, options.cache, typeof options.fetchGithub === "string" && options.fetchGithub)
+    result.github = await fetchRepo(repoInfo.user, repoInfo.project, options.cache, typeof options.fetchGithub === "string" ? options.fetchGithub : undefined)
   }
   return result
 }
