@@ -2,7 +2,7 @@ import path from "path"
 import os from "os"
 
 import jestFs, {mock as fs} from "jest-plugin-fs"
-import loadJsonFile from "load-json-file"
+import fsp from "@absolunet/fsp"
 import appCacheDir from "app-cache-dir"
 
 import publishimo from "../dist"
@@ -55,7 +55,7 @@ describe("Tests with mocked fs", () => {
     const pkgFile = path.resolve(releaseDir, "package.json")
     expect.stringContaining(pkgFile, path.sep)
     expect(fs.existsSync(pkgFile)).toBe(true)
-    const pkg = loadJsonFile.sync(pkgFile)
+    const pkg = await fsp.readJson(pkgFile)
     const expectedAuthorName = "Jaid"
     const expectedPkg = {
       name: "publishimo",
@@ -86,23 +86,30 @@ describe("Tests with mocked fs", () => {
       outputPath: expect.stringContaining(`${path.sep}package.json`),
     })
     const cacheDir = path.join(appCacheDir("publishimo"), "github", "Jaid", "publishimo")
-    const cacheFile = path.join(cacheDir, "info.json")
+    const cacheFile = path.join(cacheDir, "fetch.json5")
     expect(fs.existsSync(cacheDir)).toBeTruthy()
     expect(fs.existsSync(cacheFile)).toBeTruthy()
-    const cache = await loadJsonFile(cacheFile)
+    const cache = await fsp.readJson5(cacheFile)
     expect(cache).toMatchObject({
-      license: {
-        spdx_id: result.generatedPkg.license,
+      data: {
+        license: {
+          spdx_id: result.generatedPkg.license,
+        },
+        description: result.generatedPkg.description,
+        topics: expect.arrayContaining(result.generatedPkg.keywords),
       },
-      description: result.generatedPkg.description,
-      topics: expect.arrayContaining(result.generatedPkg.keywords),
+      fetch: {
+        timestamp: expect.any(Number),
+        domain: "api.github.com",
+        path: "repos/Jaid/publishimo",
+      },
     })
   })
   it("should generate release without any configuration", async () => {
     await publishimo({
       output: releaseDir,
     })
-    const pkg = await loadJsonFile(path.join(releaseDir, "package.json"))
+    const pkg = await fsp.readJson(path.join(releaseDir, "package.json"))
     expect(Object.keys(pkg).length).toBe(2)
     expect(pkg).toMatchObject({
       name: "publishimo-output",

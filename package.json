@@ -14,21 +14,21 @@
     "testEnvironment": "node"
   },
   "dependencies": {
+    "@absolunet/fsp": "^1.4.0",
     "app-cache-dir": "^0.4.0",
     "array-to-object-keys": "^1.0.15",
+    "epoch-seconds": "^1.0.2",
     "fs-extra": "^7.0.1",
     "gh-got": "^8.1.0",
     "hosted-git-info": "^2.7.1",
     "json5": "^2.1.0",
     "lodash": "^4.17.11",
-    "make-dir": "^2.0.0",
     "normalize-diacritics": "^1.0.2",
     "normalize-url": "^4.1.0",
     "obj-clean": "^2.0.0",
     "parse-author": "^2.0.0",
     "resolve-pkg-option": "^1.0.1",
-    "sort-keys": "^2.0.0",
-    "write-json-file": "^3.0.2"
+    "sort-keys": "^2.0.0"
   },
   "devDependencies": {
     "babel-jest": "24.0.0",
@@ -41,7 +41,6 @@
     "jest-plugin-fs": "^2.9.0",
     "js-yaml": "^3.12.1",
     "jsdoc": "^3.5.5",
-    "load-json-file": "^5.1.0",
     "mock-fs": "^4.8.0",
     "opn-cli": "^4.0.0",
     "publishimo-cli": "^2.4.0",

@@ -1,6 +1,6 @@
 import path from "path"
 
-import fs from "fs-extra"
+import fs from "@absolunet/fsp"
 import normalizeUrl from "normalize-url"
 import gitInfo from "hosted-git-info"
 import cleanString from "lib/cleanString"
@@ -8,32 +8,42 @@ import getGithubProfile from "lib/getGithubProfile"
 import {isString, pick} from "lodash"
 import appCacheDir from "app-cache-dir"
 import ghGot from "gh-got"
-import makeDir from "make-dir"
-import json5 from "json5"
+import epochSeconds from "epoch-seconds"
+
+const domain = "api.github.com"
 
 const fetchRepo = async (owner, repo, cache = true) => {
   const cacheDir = path.join(appCacheDir("publishimo"), "github", owner, repo)
-  const cacheFile = path.join(cacheDir, "info.json")
+  const cacheFile = path.join(cacheDir, "fetch.json5")
   if (cache) {
-    if (fs.existsSync(cacheFile)) {
+    const exists = await fs.pathExists(cacheFile)
+    if (exists) {
+      const cacheData = await fs.readJson5(cacheFile)
       return {
         cacheFile,
-        ...fs.readJsonSync(cacheFile),
+        ...cacheData,
       }
     }
   }
   if (!isString(process.env?.GITHUB_TOKEN)) {
-    throw new Error(`process.env.GITHUB_TOKEN is not set, I can't fetch info of GitHub repository ${owner}/${repo}!`)
+    throw new Error(`process.env.GITHUB_TOKEN is not set, I can't fetch info of GitHub repository ${owner}/${repo}`)
   }
-  const {body, rateLimit} = await ghGot(`repos/${owner}/${repo}`, {
+  const apiPath = `repos/${owner}/${repo}`
+  const {body, rateLimit} = await ghGot(apiPath, {
     headers: {
       accept: "application/vnd.github.mercy-preview+json",
     },
   })
-  const info = pick(body, ["topics", "description", "license", "homepage"])
+  const info = {
+    fetch: {
+      domain,
+      path: apiPath,
+      timestamp: epochSeconds(),
+    },
+    data: pick(body, ["topics", "description", "license", "homepage"]),
+  }
   if (cache) {
-    await makeDir(cacheDir)
-    fs.writeJsonSync(cacheFile, info)
+    await fs.outputJson5(cacheFile, info)
     info.cacheFile = cacheFile
   }
   return {
