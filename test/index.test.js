@@ -116,4 +116,32 @@ describe("Tests with mocked fs", () => {
       version: "1.0.0",
     })
   })
+  it("should generate package by combining sourcePkg, option fields and GitHub data", async () => {
+    const pkg = {
+      version: "5.5.5",
+      author: "Jaid <jaid.jsx@gmail.com> (github.com/jaid)",
+    }
+    const result = await publishimo({
+      pkg,
+      name: "epoch-seconds",
+      fetchGithub: true,
+    })
+    expect(result).toMatchObject({
+      generatedPkg: {
+        author: {
+          name: "Jaid",
+          email: "jaid.jsx@gmail.com",
+          url: "https://github.com/jaid",
+        },
+        bugs: "https://github.com/jaid/epoch-seconds/issues",
+        description: "Returns the seconds passed since Unix epoch",
+        homepage: "https://github.com/jaid/epoch-seconds",
+        keywords: expect.arrayContaining(["date"]),
+        license: "MIT",
+        name: "epoch-seconds",
+        repository: "github:jaid/epoch-seconds",
+        version: "5.5.5",
+      },
+    })
+  })
 })
