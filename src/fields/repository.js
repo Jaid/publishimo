@@ -10,24 +10,29 @@ import appCacheDir from "app-cache-dir"
 import ghGot from "gh-got"
 import epochSeconds from "epoch-seconds"
 
-const domain = "api.github.com"
+const apiDomain = "api.github.com"
 
-const fetchRepo = async (owner, repo, cache = true, token = process.env.GITHUB_TOKEN) => {
+const fetchRepo = async (owner, repo, cacheSeconds = 0, token = process.env.GITHUB_TOKEN) => {
   const cacheDir = path.join(appCacheDir("publishimo"), "github", owner, repo)
   const cacheFile = path.join(cacheDir, "fetch.json5")
-  if (cache) {
+  if (cacheSeconds) {
     const exists = await fs.pathExists(cacheFile)
     if (exists) {
       const cacheData = await fs.readJson5(cacheFile)
-      return {
-        cacheFile,
-        ...cacheData,
+      const now = epochSeconds()
+      const difference = now - cacheData.fetch.timestamp
+      if (difference < cacheSeconds) {
+        return {
+          cacheDir,
+          cacheFile,
+          ...cacheData,
+        }
       }
     }
   }
   const apiPath = `repos/${owner}/${repo}`
   if (!token) {
-    throw new Error(`options.fetchGithub="token" and process.env.GITHUB_TOKEN are not set, I can't fetch info of ${apiPath}`)
+    throw new Error(`options.fetchGithub="token" and process.env.GITHUB_TOKEN are not set, I can't fetch info of ${apiPath} on domain ${apiDomain}`)
   }
   const {body, rateLimit} = await ghGot(apiPath, {
     token,
@@ -38,13 +43,13 @@ const fetchRepo = async (owner, repo, cache = true, token = process.env.GITHUB_T
   })
   const info = {
     fetch: {
-      domain,
+      domain: apiDomain,
       path: apiPath,
       timestamp: epochSeconds(),
     },
     data: pick(body, ["topics", "description", "license", "homepage"]),
   }
-  if (cache) {
+  if (cacheSeconds) {
     await fs.outputJson5(cacheFile, info)
     info.cacheFile = cacheFile
   }
@@ -93,7 +98,7 @@ export const prepare = async ({getAny, options, sourcePkgLocation}) => {
     value,
   }
   if (options.fetchGithub && repoInfo) {
-    result.github = await fetchRepo(repoInfo.user, repoInfo.project, options.cache, typeof options.fetchGithub === "string" ? options.fetchGithub : undefined)
+    result.github = await fetchRepo(repoInfo.user, repoInfo.project, options.cacheSeconds, typeof options.fetchGithub === "string" ? options.fetchGithub : undefined)
   }
   return result
 }

@@ -18,7 +18,7 @@ export default async options => {
   options = {
     pkg: {},
     output: false,
-    cache: true,
+    cacheSeconds: 8 * 60 * 60, // 8 hours
     fetchGithub: false,
     ...options,
   }
