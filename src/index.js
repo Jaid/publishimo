@@ -8,6 +8,8 @@ import fs from "@absolunet/fsp"
 
 import generatePackage from "./generatePackage"
 
+const debug = require("debug")("publishimo")
+
 /**
  * Generates a new pkg object
  * @async
@@ -22,12 +24,18 @@ export default async options => {
     fetchGithub: false,
     ...options,
   }
+  debug(`Starting with options ${JSON.stringify(options)}`)
   const {pkg: sourcePkg, path: sourcePkgLocation} = await resolvePkgOption(options.pkg)
+  debug(`Resolved pkg data ${JSON.stringify({
+    sourcePkgLocation,
+    sourcePkg,
+  })}`)
   const generatedPkg = await generatePackage({
     sourcePkg,
     sourcePkgLocation,
     options,
   })
+  debug(`Generated ${JSON.stringify(generatedPkg)}`)
 
   let outputDir
   if (isString(options.output)) {
@@ -61,6 +69,7 @@ export default async options => {
 
   if (outputDir) {
     const outputPath = path.join(outputDir, "package.json")
+    debug(`Saving data as ${outputPath}`)
     await fs.outputJson(outputPath, generatedPkg)
     Object.assign(stats, {
       outputDir,
