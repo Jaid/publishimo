@@ -126,6 +126,8 @@ describe("Tests with mocked fs", () => {
       name: "epoch-seconds",
       fetchGithub: true,
     })
+    expect(pkg._id).toBeUndefined() // eslint-disable-line no-underscore-dangle
+    expect(pkg.readme).toBeUndefined()
     expect(result).toMatchObject({
       generatedPkg: {
         author: {
