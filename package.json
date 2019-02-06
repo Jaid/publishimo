@@ -47,7 +47,7 @@
     "publishimo-cli": "^2.4.0",
     "webpack": "^4.29.1",
     "webpack-cli": "^3.2.3",
-    "webpack-config-jaid": "1.24.2"
+    "webpack-config-jaid": "1.25.2"
   },
   "scripts": {
     "build:prod": "cross-env NODE_ENV=production webpack",
