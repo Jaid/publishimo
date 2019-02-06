@@ -12,7 +12,7 @@ import epochSeconds from "epoch-seconds"
 
 const domain = "api.github.com"
 
-const fetchRepo = async (owner, repo, cache = true) => {
+const fetchRepo = async (owner, repo, cache = true, token = process.env.GITHUB_TOKEN) => {
   const cacheDir = path.join(appCacheDir("publishimo"), "github", owner, repo)
   const cacheFile = path.join(cacheDir, "fetch.json5")
   if (cache) {
@@ -25,10 +25,10 @@ const fetchRepo = async (owner, repo, cache = true) => {
       }
     }
   }
-  if (!isString(process.env?.GITHUB_TOKEN)) {
-    throw new Error(`process.env.GITHUB_TOKEN is not set, I can't fetch info of GitHub repository ${owner}/${repo}`)
-  }
   const apiPath = `repos/${owner}/${repo}`
+  if (!token) {
+    throw new Error(`options.publishimo = "token" and process.env.GITHUB_TOKEN are not set, I can't fetch info of ${apiPath}`)
+  }
   const {body, rateLimit} = await ghGot(apiPath, {
     headers: {
       accept: "application/vnd.github.mercy-preview+json",
@@ -91,7 +91,7 @@ export const prepare = async ({getAny, options, sourcePkgLocation}) => {
     value,
   }
   if (options.fetchGithub && repoInfo) {
-    result.github = await fetchRepo(repoInfo.user, repoInfo.project, options.cache)
+    result.github = await fetchRepo(repoInfo.user, repoInfo.project, options.cache, typeof options.fetchGithub === "string" && options.fetchGithub)
   }
   return result
 }
