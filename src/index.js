@@ -22,6 +22,7 @@ export default async options => {
     output: false,
     cacheSeconds: 8 * 60 * 60, // 8 hours
     fetchGithub: false,
+    json5: false,
     ...options,
   }
   debug(`Starting with options ${JSON.stringify(options)}`)
@@ -70,7 +71,7 @@ export default async options => {
   if (outputDir) {
     const outputPath = path.join(outputDir, "package.json")
     debug(`Saving data as ${outputPath}`)
-    await fs.outputJson(outputPath, generatedPkg)
+    await (options.json5 ? fs.outputJson5 : fs.outputJson)(outputPath, generatedPkg)
     Object.assign(stats, {
       outputDir,
       outputPath,
