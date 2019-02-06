@@ -1,5 +1,5 @@
 {
-  "version": "4.0.0",
+  "version": "4.0.1",
   "private": true,
   "author": "Jaid <jaid.jsx@gmail.com> (https://github.com/Jaid)",
   "babel": {
@@ -16,7 +16,7 @@
   "dependencies": {
     "@absolunet/fsp": "^1.4.0",
     "app-cache-dir": "^0.4.0",
-    "array-to-object-keys": "^1.0.15",
+    "array-to-object-keys": "^1.0.18",
     "epoch-seconds": "^1.0.2",
     "fs-extra": "^7.0.1",
     "gh-got": "^8.1.0",
@@ -27,17 +27,17 @@
     "normalize-url": "^4.1.0",
     "obj-clean": "^2.0.0",
     "parse-author": "^2.0.0",
-    "resolve-pkg-option": "^1.0.1",
+    "resolve-pkg-option": "^1.0.3",
     "sort-keys": "^2.0.0"
   },
   "devDependencies": {
-    "babel-jest": "24.0.0",
+    "babel-jest": "24.1.0",
     "babel-preset-jaid": "2.9.0",
     "cross-env": "^5.2.0",
     "eslint": "^5.13.0",
     "eslint-config-jaid": "1.11.0",
     "fs-readdir-recursive": "^1.1.0",
-    "jest": "24.0.0",
+    "jest": "24.1.0",
     "jest-plugin-fs": "^2.9.0",
     "js-yaml": "^3.12.1",
     "jsdoc": "^3.5.5",
