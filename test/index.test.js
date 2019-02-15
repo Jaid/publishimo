@@ -5,9 +5,10 @@ import jestFs, {mock as fs} from "jest-plugin-fs"
 import fsp from "@absolunet/fsp"
 import appCacheDir from "app-cache-dir"
 
-import publishimo from "../dist"
-
 import addFileToObject from "./lib/addFileToObject"
+
+const indexModule = (process.env.MAIN ? path.resolve(__dirname, "..", process.env.MAIN) : path.join(__dirname, "..", "src"))
+const {default: publishimo} = require(indexModule)
 
 const releaseDir = path.resolve(os.tmpdir(), "publishimo/test-release")
 jest.mock("fs", () => require("jest-plugin-fs/mock"))
