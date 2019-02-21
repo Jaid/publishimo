@@ -47,7 +47,7 @@
     "publishimo-cli": "^2.4.0",
     "webpack": "^4.29.3",
     "webpack-cli": "^3.2.3",
-    "webpack-config-jaid": "^2.4.0"
+    "webpack-config-jaid": "^3.0.0"
   },
   "scripts": {
     "clean": "rimraf dist/ test/**/dist/",
