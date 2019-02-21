@@ -7,7 +7,7 @@ import appCacheDir from "app-cache-dir"
 
 import addFileToObject from "./lib/addFileToObject"
 
-const indexModule = (process.env.MAIN ? path.resolve(__dirname, "..", process.env.MAIN) : path.join(__dirname, "..", "src"))
+const indexModule = process.env.MAIN ? path.resolve(__dirname, "..", process.env.MAIN) : path.join(__dirname, "..", "src")
 const {default: publishimo} = require(indexModule)
 
 const releaseDir = path.resolve(os.tmpdir(), "publishimo/test-release")

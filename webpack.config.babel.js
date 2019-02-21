@@ -1,6 +1,6 @@
-import {configureLib} from "webpack-config-jaid"
+import {configureNodeLib} from "webpack-config-jaid"
 
-export default configureLib({
-  publishimo: {fetchGithub: true},
+export default configureNodeLib({
   documentation: {babel: true},
+  publishimo: {fetchGithub: true},
 })
