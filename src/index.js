@@ -1,5 +1,28 @@
 /** @module publishimo */
 
+/**
+ * @typedef options
+ * @type {object}
+ * @property {object|string} [pkg={}] Path to a package.json or pkg data
+ * @property {string} [output=false] If typeof `string`, this will be the path where the generated package.json is saved to
+ * @property {boolean|string} [fetchGithub=false] If `true`, generated pkg data will be enhanced by information fetched from the GitHub repository using `process.env.GITHUB_TOKEN` to make GitHub API calls. If typeof `string`, this will be used as GitHub token.
+ * @property {Number|false} [cacheSeconds=28800] If typeof `number`, the data fetched from GitHub expires after that much seconds.
+ * @property {boolean} [json5=false] If `true`, `json5.stringify` will be used as output format. If `false`, `JSON.stringify` will be used.
+ * @property {string[]} [includeFields=[]] Field names that should forcefully be forwarded from `options.pkg` to generated pkg. For example, use `includeFields: ["babel"]` to include your Babel config in your output package.
+ * @property {string[]} [excludeFields=[]] Fields names that are never written to generated pkg.
+ */
+
+/**
+ * @typedef result
+ * @type {object}
+ * @property {object} sourcePkg Source pkg data
+ * @property {object} generatedPkg Generated pkg data
+ * @property {object} options Options used for processing
+ * @property {string} [sourcePkgLocation] If `options.pkg` is typeof `string`, this will be the path where the source pkg data got loaded from
+ * @property {string} [outputDir] If `options.output` is given, this will be the directory where the generated package.json got saved to
+ * @property {string} [outputPath] If `options.output` is given, this will be the path (including filename) where the generated package.json got saved to
+ */
+
 import path from "path"
 
 import {isString} from "lodash"
@@ -11,10 +34,11 @@ import generatePackage from "./generatePackage"
 const debug = require("debug")("publishimo")
 
 /**
- * Generates a new pkg object
+ * Generates a better package.json object
  * @async
- * @param {object} options
- * @returns {Promise<object>} publishimoResult
+ * @function default
+ * @param {options} options
+ * @returns {Promise<result>} Result object
  */
 export default async options => {
   options = {
@@ -39,7 +63,7 @@ export default async options => {
     options,
   })
   debug(`Generated ${JSON.stringify(generatedPkg)}`)
-  debugger
+
   let outputDir
   if (isString(options.output)) {
     const exists = await fs.pathExists(options.output)
