@@ -23,6 +23,8 @@ export default async options => {
     cacheSeconds: 8 * 60 * 60, // 8 hours
     fetchGithub: false,
     json5: false,
+    includeFields: [],
+    excludeFields: [],
     ...options,
   }
   debug(`Starting with options ${JSON.stringify(options)}`)
@@ -37,7 +39,7 @@ export default async options => {
     options,
   })
   debug(`Generated ${JSON.stringify(generatedPkg)}`)
-
+  debugger
   let outputDir
   if (isString(options.output)) {
     const exists = await fs.pathExists(options.output)

@@ -1,6 +1,6 @@
-import {isNil, isFunction} from "lodash"
+import {isNil, isFunction, omit, omitBy} from "lodash"
 import sortKeys from "sort-keys"
-import arrayToObjectKeys from "array-to-object-keys"
+import arrayToObjectKeys, {parallel} from "array-to-object-keys"
 
 import resolveAny from "./resolveAny"
 
@@ -43,7 +43,8 @@ export default async ({sourcePkg = {}, sourcePkgLocation, options}) => {
   const results = await Promise.all(metaGeneratorJobs)
   const meta = arrayToObjectKeys(Object.keys(processors), (key, index) => results[index])
 
-  const pkgGeneratorJobs = Object.entries(processors).map(([field, processor]) => async () => {
+  const generatedPkg = await parallel(fields, async field => {
+    const processor = processors[field]
     if (processor.applyMeta) {
       const metaValue = meta[field]
       if (!isNil(metaValue)) {
@@ -65,9 +66,18 @@ export default async ({sourcePkg = {}, sourcePkgLocation, options}) => {
     }
   })
 
-  const pkgResults = await Promise.all(pkgGeneratorJobs.map(job => job()))
+  const addIncludes = pkg => {
+    for (const key of options.includeFields) {
+      pkg[key] = sourcePkg[key] || options[key]
+    }
+    return pkg
+  }
 
-  const generatedPkg = arrayToObjectKeys(Object.keys(processors), (key, index) => pkgResults[index])
+  const cleanedPkg = generatedPkg
+  |> omit(#, options.excludeFields)
+  |> addIncludes
+  |> omitBy(#, isNil)
+  |> sortKeys
 
-  return generatedPkg |> sortKeys
+  return cleanedPkg
 }
