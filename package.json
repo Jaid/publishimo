@@ -44,7 +44,7 @@
     "babel-jest": "^24.1.0",
     "babel-preset-jaid": "^4.3.0",
     "cross-env": "^5.2.0",
-    "eslint": "^5.14.1",
+    "eslint": "^5.15.1",
     "eslint-config-jaid": "^1.11.1",
     "fs-readdir-recursive": "^1.1.0",
     "jest": "^24.1.0",
