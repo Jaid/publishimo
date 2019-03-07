@@ -34,7 +34,7 @@
     "json5": "^2.1.0",
     "lodash": "^4.17.11",
     "normalize-diacritics": "^1.0.2",
-    "normalize-url": "^4.1.0",
+    "normalize-url": "^4.2.0",
     "obj-clean": "^2.0.0",
     "parse-author": "^2.0.0",
     "resolve-pkg-option": "^1.0.4",
