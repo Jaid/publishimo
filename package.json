@@ -22,12 +22,12 @@
     "sort-keys": "^2.0.0"
   },
   "devDependencies": {
-    "babel-jest": "^24.3.1",
+    "babel-jest": "^24.4.0",
     "babel-preset-jaid": "^5.4.0",
     "eslint": "^5.15.1",
     "eslint-config-jaid": "^1.12.0",
     "fs-readdir-recursive": "^1.1.0",
-    "jest": "^24.3.1",
+    "jest": "^24.4.0",
     "jest-plugin-fs": "^2.9.0",
     "js-yaml": "^3.12.2",
     "jsdoc": "^3.5.5",
