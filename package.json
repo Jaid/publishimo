@@ -8,7 +8,7 @@
     "app-cache-dir": "^0.4.0",
     "array-to-object-keys": "^1.1.0",
     "debug": "^4.1.1",
-    "epoch-seconds": "^1.0.2",
+    "epoch-seconds": "^1.0.3",
     "fs-extra": "^7.0.1",
     "gh-got": "^8.1.0",
     "hosted-git-info": "^2.7.1",
