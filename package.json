@@ -4,7 +4,7 @@
   "author": "Jaid <jaid.jsx@gmail.com> (https://github.com/Jaid)",
   "dependencies": {
     "@absolunet/fsp": "^1.6.0",
-    "@babel/runtime": "^7.3.4",
+    "@babel/runtime": "^7.4.3",
     "app-cache-dir": "^0.4.0",
     "array-to-object-keys": "^1.1.0",
     "debug": "^4.1.1",
