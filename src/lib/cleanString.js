@@ -1,5 +1,5 @@
 import {trim} from "lodash"
-import {normalizeSync} from "normalize-diacritics/dist/index.cjs.js"
+import {normalizeSync} from "normalize-diacritics"
 
 export default x => x
   |> trim
