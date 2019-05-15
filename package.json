@@ -22,6 +22,7 @@
     "sort-keys": "^3.0.0"
   },
   "devDependencies": {
+    "acorn": "^6.1.1",
     "babel-jest": "^24.8.0",
     "babel-preset-jaid": "^6.2.0",
     "eslint": "^5.16.0",
