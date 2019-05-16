@@ -117,6 +117,34 @@ describe("Tests with mocked fs", () => {
       version: "1.0.0",
     })
   })
+  // Testing following case: https://github.com/npm/normalize-package-data/issues/91
+  it("should avoid unwanted dependency field merges", async () => {
+    const pkg = {
+      name: "dependency-test",
+      dependencies: {
+        "@babel/core": "^7.0.0",
+      },
+      optionalDependencies: {
+        "epoch-seconds": "^1.0.0",
+      },
+    }
+    const result = await publishimo({
+      pkg,
+    })
+    expect(result).toMatchObject({
+      generatedPkg: {
+        version: "1.0.0",
+        name: "dependency-test",
+        dependencies: {
+          "@babel/core": "^7.0.0",
+        },
+        optionalDependencies: {
+          "epoch-seconds": "^1.0.0",
+        },
+      },
+    })
+    expect(Object.keys(result.generatedPkg.dependencies).length).toBe(1)
+  })
   it("should generate package by combining sourcePkg, option fields and GitHub data", async () => {
     const pkg = {
       version: "5.5.5",
