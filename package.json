@@ -18,7 +18,7 @@
     "normalize-url": "^4.3.0",
     "obj-clean": "^2.0.0",
     "parse-author": "^2.0.0",
-    "resolve-pkg-option": "^1.0.5",
+    "resolve-pkg-option": "^1.0.6",
     "sort-keys": "^3.0.0"
   },
   "devDependencies": {
