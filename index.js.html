@@ -1,0 +1,198 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>JSDoc: index.js</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Muli:100,400,700|Oswald:300|Inconsolata,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+</head>
+
+<body>
+    <div id="stickyNavbarOverlay"></div>
+    <div class="top-navbar">
+        <div class="container">
+            <nav class="navbar" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                    
+                    
+                        <h1 class="navbar-item">Documentation</h1>
+                    
+                    <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                
+            </nav>
+        </div>
+    </div>
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3" id="sidebarNav">
+                <div class="sidebar">
+                    <nav>
+                        <h2><a href="index.html">Home</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-publishimo.html">publishimo</a></li></ul></div>
+                    </nav>
+                </div>
+            </div>
+            <div class="column is-9-desktop">
+                <div class="content" id="main-content-wrapper">
+                    <header class="page-title">
+                        <p>Source</p>
+                        <h1>index.js</h1>
+                    </header>
+                    
+                    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/** @module publishimo */
+
+/**
+ * @typedef options
+ * @type {object}
+ * @property {object|string} [pkg={}] Path to a package.json or pkg data
+ * @property {string} [output=false] If typeof `string`, this will be the path where the generated package.json is saved to
+ * @property {boolean|string} [fetchGithub=false] If `true`, generated pkg data will be enhanced by information fetched from the GitHub repository using `process.env.GITHUB_TOKEN` to make GitHub API calls. If typeof `string`, this will be used as GitHub token.
+ * @property {Number|false} [cacheSeconds=28800] If typeof `number`, the data fetched from GitHub expires after that much seconds.
+ * @property {boolean} [json5=false] If `true`, `json5.stringify` will be used as output format. If `false`, `JSON.stringify` will be used.
+ * @property {string[]} [includeFields=[]] Field names that should forcefully be forwarded from `options.pkg` to generated pkg. For example, use `includeFields: ["babel"]` to include your Babel config in your output package.
+ * @property {string[]} [excludeFields=[]] Fields names that are never written to generated pkg.
+ */
+
+/**
+ * @typedef result
+ * @type {object}
+ * @property {object} sourcePkg Source pkg data
+ * @property {object} generatedPkg Generated pkg data
+ * @property {object} options Options used for processing
+ * @property {string} [sourcePkgLocation] If `options.pkg` is typeof `string`, this will be the path where the source pkg data got loaded from
+ * @property {string} [outputDir] If `options.output` is given, this will be the directory where the generated package.json got saved to
+ * @property {string} [outputPath] If `options.output` is given, this will be the path (including filename) where the generated package.json got saved to
+ */
+
+import path from "path"
+
+import {isString} from "lodash"
+import resolvePkgOption from "resolve-pkg-option"
+import fs from "@absolunet/fsp"
+
+import generatePackage from "./generatePackage"
+
+const debug = require("debug")("publishimo")
+
+/**
+ * Generates a better package.json object
+ * @async
+ * @function default
+ * @param {options} options
+ * @returns {Promise&lt;result>} Result object
+ */
+export default async options => {
+  options = {
+    pkg: {},
+    output: false,
+    cacheSeconds: 8 * 60 * 60, // 8 hours
+    fetchGithub: false,
+    json5: false,
+    includeFields: [],
+    excludeFields: [],
+    ...options,
+  }
+  debug(`Starting with options ${JSON.stringify(options)}`)
+  const {pkg: sourcePkg, path: sourcePkgLocation} = await resolvePkgOption(options.pkg)
+  debug(`Resolved pkg data ${JSON.stringify({
+    sourcePkgLocation,
+    sourcePkg,
+  })}`)
+  const generatedPkg = await generatePackage({
+    sourcePkg,
+    sourcePkgLocation,
+    options,
+  })
+  debug(`Generated ${JSON.stringify(generatedPkg)}`)
+
+  let outputDir
+  if (isString(options.output)) {
+    const exists = await fs.pathExists(options.output)
+    if (exists) {
+      const stat = await fs.stat(options.output)
+      if (stat.isDirectory()) {
+        outputDir = options.output
+      } else {
+        outputDir = path.dirname(options.output)
+      }
+    } else if (options.output.endsWith(".json")) {
+      outputDir = path.dirname(options.output)
+    } else {
+      outputDir = options.output
+    }
+  }
+  if (options.output === true) {
+    outputDir = "dist"
+  }
+
+  const stats = {
+    sourcePkg,
+    generatedPkg,
+    options,
+  }
+
+  if (sourcePkgLocation) {
+    stats.sourcePkgLocation = sourcePkgLocation
+  }
+
+  if (outputDir) {
+    const outputPath = path.join(outputDir, "package.json")
+    debug(`Saving data as ${outputPath}`)
+    await (options.json5 ? fs.outputJson5 : fs.outputJson)(outputPath, generatedPkg)
+    Object.assign(stats, {
+      outputDir,
+      outputPath,
+    })
+  }
+
+  return stats
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.2</a> on Thu May 16 2019 20:24:21 GMT+0000 (Coordinated Universal Time)</p>
+        <p class="sidebar-created-by">
+            <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+            <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers</a>
+        </p>
+    </div>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/app.min.js"></script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
