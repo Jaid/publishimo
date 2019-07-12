@@ -13,7 +13,7 @@
     "gh-got": "^8.1.0",
     "hosted-git-info": "^2.7.1",
     "json5": "^2.1.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "normalize-diacritics": "^2.5.0",
     "normalize-url": "^4.3.0",
     "obj-clean": "^3.0.1",
