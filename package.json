@@ -50,5 +50,6 @@
     "test:debug": "DEBUG=\"$DEBUG:$(basename $PWD),$(basename $PWD):*\" NODE_ENV=test node --inspect=9229 node_modules/jest/bin/jest.js --runInBand",
     "prepareActionJest": "npm run build:prod"
   },
-  "name": "publishimo"
+  "name": "publishimo",
+  "description": "Magically generates a minified, cleaned and autofilled package.json to get your Node package ready for next level publishing!"
 }
