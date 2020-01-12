@@ -1,55 +1,84 @@
 # publishimo
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/Jaid/publishimo.svg)](https://greenkeeper.io/)
 
-Generates a better package.json for published packages.
+<a href="https://raw.githubusercontent.com/Jaid/publishimo/master/license.txt"><img src="https://img.shields.io/github/license/Jaid/publishimo?style=flat-square" alt="License"/></a>  
+<a href="https://actions-badge.atrox.dev/Jaid/publishimo/goto"><img src="https://img.shields.io/endpoint.svg?style=flat-square&url=https%3A%2F%2Factions-badge.atrox.dev%2FJaid%2Fpublishimo%2Fbadge" alt="Build status"/></a> <a href="https://github.com/Jaid/publishimo/commits"><img src="https://img.shields.io/github/commits-since/Jaid/publishimo/v5.0.6?style=flat-square&logo=github" alt="Commits since v5.0.6"/></a> <a href="https://github.com/Jaid/publishimo/commits"><img src="https://img.shields.io/github/last-commit/Jaid/publishimo?style=flat-square&logo=github" alt="Last commit"/></a> <a href="https://github.com/Jaid/publishimo/issues"><img src="https://img.shields.io/github/issues/Jaid/publishimo?style=flat-square&logo=github" alt="Issues"/></a>  
+<a href="https://npmjs.com/package/publishimo"><img src="https://img.shields.io/npm/v/publishimo?style=flat-square&logo=npm&label=latest%20version" alt="Latest version on npm"/></a> <a href="https://github.com/Jaid/publishimo/network/dependents"><img src="https://img.shields.io/librariesio/dependents/npm/publishimo?style=flat-square&logo=npm" alt="Dependents"/></a> <a href="https://npmjs.com/package/publishimo"><img src="https://img.shields.io/npm/dm/publishimo?style=flat-square&logo=npm" alt="Downloads"/></a>
 
-## API
-```js
-import publishimo from "publishimo"
-publishimo(options).then(result => {
-  console.log(result)
-})
+**Magically generates a minified, cleaned and autofilled package.json to get your Node package ready for next level publishing!**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Installation
+<a href="https://npmjs.com/package/publishimo"><img src="https://img.shields.io/badge/npm-publishimo-C23039?style=flat-square&logo=npm" alt="publishimo on npm"/></a>
+```bash
+npm install --save publishimo@^5.0.6
+```
+<a href="https://yarnpkg.com/package/publishimo"><img src="https://img.shields.io/badge/Yarn-publishimo-2F8CB7?style=flat-square&logo=yarn&logoColor=white" alt="publishimo on Yarn"/></a>
+```bash
+yarn add publishimo@^5.0.6
 ```
 
-## Options
 
-```js
-const publishimoConfig = {
 
-  // Can be a path to an existing package.json or a pkg object
-  pkg: path.resolve("..", "package.json"), // Default: {}
 
-  // Output generated pkg data as JSON to specified file
-  output: path.resolve("..", "dist", "package.json"), // Default: false
 
-  // If true, some metadata gets fetched from an existing GitHub repository
-  fetchGithub: true, // Default: false
 
-  name: "name", // Default: Name of project root folder
-  version: "1.2.3", // Default: 1.0.0
-  main: "index.js", // No default, but publishimo-webpack-plugin has one
-  license: "MIT", // Default comes from GitHub if fetchGithub is true
-  description: "", // Default comes from GitHub if fetchGithub is true
-  keywords: ["tag"] // Default comes from GitHub if fetchGithub is true (repository topics)
-  author: {
-    name: "Smitty Werben Jagger Man Jaidsen",
-    email: "jaid@example.com",
-    github: "Jaid" // Shortcut for author.homepage
-  },
-  os: ["!darwin"],
-  cpu : ["x64", "ia32"],
-  engines: {
-    "node" : ">=11.6.0"
-  },
-  repository: "", // Default: github.com/{author.github}/{name},
-  homepage: "", //Default: github.com/{author.github}/{name}#readme"
-  bugs: "", // Default: github.com/{author.github}/{name}/issues
-  contributors: "",
-  dependencies: {},
-  peerDependencies: {},
-  bundleDependencies: {},
-  optionalDependencies: {}
 
-}
+
+## Development
+
+
+
+Setting up:
+```bash
+git clone git@github.com:Jaid/publishimo.git
+cd publishimo
+npm install
+```
+Testing:
+```bash
+npm run test:dev
+```
+Testing in production environment:
+```bash
+npm run test
+```
+
+
+## License
+```text
+MIT License
+
+Copyright © 2019, Jaid <jaid.jsx@gmail.com> (github.com/jaid)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 ```
