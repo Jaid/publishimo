@@ -1,9 +1,9 @@
 # publishimo
 
 
-<a href="https://raw.githubusercontent.com/Jaid/publishimo/master/license.txt"><img src="https://img.shields.io/github/license/Jaid/publishimo?style=flat-square" alt="License"/></a>  
-<a href="https://actions-badge.atrox.dev/Jaid/publishimo/goto"><img src="https://img.shields.io/endpoint.svg?style=flat-square&url=https%3A%2F%2Factions-badge.atrox.dev%2FJaid%2Fpublishimo%2Fbadge" alt="Build status"/></a> <a href="https://github.com/Jaid/publishimo/commits"><img src="https://img.shields.io/github/commits-since/Jaid/publishimo/v5.0.6?style=flat-square&logo=github" alt="Commits since v5.0.6"/></a> <a href="https://github.com/Jaid/publishimo/commits"><img src="https://img.shields.io/github/last-commit/Jaid/publishimo?style=flat-square&logo=github" alt="Last commit"/></a> <a href="https://github.com/Jaid/publishimo/issues"><img src="https://img.shields.io/github/issues/Jaid/publishimo?style=flat-square&logo=github" alt="Issues"/></a>  
-<a href="https://npmjs.com/package/publishimo"><img src="https://img.shields.io/npm/v/publishimo?style=flat-square&logo=npm&label=latest%20version" alt="Latest version on npm"/></a> <a href="https://github.com/Jaid/publishimo/network/dependents"><img src="https://img.shields.io/librariesio/dependents/npm/publishimo?style=flat-square&logo=npm" alt="Dependents"/></a> <a href="https://npmjs.com/package/publishimo"><img src="https://img.shields.io/npm/dm/publishimo?style=flat-square&logo=npm" alt="Downloads"/></a>
+<a href="https://raw.githubusercontent.com/jaid/publishimo/master/license.txt"><img src="https://img.shields.io/github/license/jaid/publishimo?style=flat-square" alt="License"/></a> <a href="https://github.com/sponsors/jaid"><img src="https://img.shields.io/badge/<3-Sponsor-FF45F1?style=flat-square" alt="Sponsor publishimo"/></a>
+<a href="https://actions-badge.atrox.dev/jaid/publishimo/goto"><img src="https://img.shields.io/endpoint.svg?style=flat-square&url=https%3A%2F%2Factions-badge.atrox.dev%2Fjaid%2Fpublishimo%2Fbadge" alt="Build status"/></a> <a href="https://github.com/jaid/publishimo/commits"><img src="https://img.shields.io/github/commits-since/jaid/publishimo/v5.0.6?style=flat-square&logo=github" alt="Commits since v5.0.6"/></a> <a href="https://github.com/jaid/publishimo/commits"><img src="https://img.shields.io/github/last-commit/jaid/publishimo?style=flat-square&logo=github" alt="Last commit"/></a> <a href="https://github.com/jaid/publishimo/issues"><img src="https://img.shields.io/github/issues/jaid/publishimo?style=flat-square&logo=github" alt="Issues"/></a>  
+<a href="https://npmjs.com/package/publishimo"><img src="https://img.shields.io/npm/v/publishimo?style=flat-square&logo=npm&label=latest%20version" alt="Latest version on npm"/></a> <a href="https://github.com/jaid/publishimo/network/dependents"><img src="https://img.shields.io/librariesio/dependents/npm/publishimo?style=flat-square&logo=npm" alt="Dependents"/></a> <a href="https://npmjs.com/package/publishimo"><img src="https://img.shields.io/npm/dm/publishimo?style=flat-square&logo=npm" alt="Downloads"/></a>
 
 **Magically generates a minified, cleaned and autofilled package.json to get your Node package ready for next level publishing!**
 
@@ -37,14 +37,13 @@ yarn add publishimo@^5.0.6
 
 
 
-
 ## Development
 
 
 
 Setting up:
 ```bash
-git clone git@github.com:Jaid/publishimo.git
+git clone git@github.com:jaid/publishimo.git
 cd publishimo
 npm install
 ```
