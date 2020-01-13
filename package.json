@@ -52,5 +52,9 @@
   },
   "name": "publishimo",
   "description": "Magically generates a minified, cleaned and autofilled package.json to get your Node package ready for next level publishing!",
-  "funding": "https://github.com/sponsors/jaid"
+  "funding": "https://github.com/sponsors/jaid",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jaid/publishimo"
+  }
 }
