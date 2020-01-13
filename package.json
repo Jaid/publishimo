@@ -51,5 +51,6 @@
     "prepareActionJest": "npm run build:prod"
   },
   "name": "publishimo",
-  "description": "Magically generates a minified, cleaned and autofilled package.json to get your Node package ready for next level publishing!"
+  "description": "Magically generates a minified, cleaned and autofilled package.json to get your Node package ready for next level publishing!",
+  "funding": "https://github.com/sponsors/jaid"
 }
