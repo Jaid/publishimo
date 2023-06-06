@@ -34,7 +34,7 @@
     "mock-fs": "^4.11.0",
     "publishimo-cli": "^2.4.1",
     "webpack": "^4.42.1",
-    "webpack-config-jaid": "^11.8.0"
+    "webpack-config-jaid": "^17.4.2"
   },
   "scripts": {
     "clean": "rimraf dist/",
